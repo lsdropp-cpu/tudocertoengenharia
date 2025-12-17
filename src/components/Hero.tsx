@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import projetoResidencial from "@/assets/projeto-residencial.png";
+import heroBg from "@/assets/hero-bg.jpeg";
 
 const Hero = () => {
   return (
@@ -11,8 +11,8 @@ const Hero = () => {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src={projetoResidencial}
-          alt="Estrutura Steel Frame"
+          src={heroBg}
+          alt="Casa construída com Steel Frame"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-overlay-gradient" />
