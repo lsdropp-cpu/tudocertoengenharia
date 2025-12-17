@@ -1,10 +1,6 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
 import { Facebook, Instagram } from "lucide-react";
 
 const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const navLinks = [
     { href: "#inicio", label: "Home" },
     { href: "#sobre", label: "Sobre" },
@@ -24,7 +20,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center h-12">
           {/* Social Icons - Left */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
@@ -46,13 +42,13 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Navigation - Center */}
-          <nav className="hidden lg:flex items-center justify-center flex-1 gap-8">
+          {/* Navigation - Always visible */}
+          <nav className="flex items-center justify-center flex-1 gap-4 md:gap-8">
             {navLinks.map((link, index) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors duration-300 ${
+                className={`text-xs md:text-sm font-medium transition-colors duration-300 ${
                   index === 0 
                     ? "text-primary" 
                     : "text-white/80 hover:text-primary"
@@ -62,38 +58,7 @@ const Header = () => {
               </a>
             ))}
           </nav>
-
-          {/* Empty space for balance - Right */}
-          <div className="hidden lg:block w-24" />
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-white p-2 ml-auto"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden absolute top-full left-0 right-0 bg-[#3d3d3d] border-t border-white/10 transition-all duration-300 ${
-          isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
-      >
-        <nav className="container mx-auto px-4 py-4 flex flex-col gap-3">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-white/80 hover:text-primary transition-colors duration-300 font-medium py-2"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
       </div>
     </header>
   );
