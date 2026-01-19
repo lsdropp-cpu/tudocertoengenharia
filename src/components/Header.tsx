@@ -12,7 +12,7 @@ const Header = () => {
 
   const socialLinks = [
     { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
+    { icon: Instagram, href: "https://www.instagram.com/tudocerto.engenharia", label: "Instagram" },
   ];
 
   return (
@@ -25,6 +25,8 @@ const Header = () => {
               <a
                 key={index}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.label}
                 className="text-white/60 hover:text-primary transition-colors duration-300"
               >
