@@ -6,7 +6,7 @@ const Contact = () => {
     {
       icon: Phone,
       label: "Telefone",
-      value: "(00) 00000-0000",
+      value: "Porto Alegre, Rio Grande do Sul - Brasil",
       href: "tel:+5500000000000",
     },
     {
