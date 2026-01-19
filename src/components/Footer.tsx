@@ -1,46 +1,57 @@
 import { Instagram, Facebook, Linkedin, Youtube } from "lucide-react";
 import logo from "@/assets/logo.png";
-
 const Footer = () => {
-  const socialLinks = [
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Youtube, href: "#", label: "YouTube" },
-  ];
-
-  const quickLinks = [
-    { label: "Início", href: "#inicio" },
-    { label: "Sobre", href: "#sobre" },
-    { label: "Vantagens", href: "#vantagens" },
-    { label: "Projetos", href: "#projetos" },
-    { label: "Serviços", href: "#servicos" },
-    { label: "Contato", href: "#contato" },
-  ];
-
-  return (
-    <footer className="bg-dark-bg text-secondary-foreground border-t border-secondary-foreground/10">
+  const socialLinks = [{
+    icon: Instagram,
+    href: "#",
+    label: "Instagram"
+  }, {
+    icon: Facebook,
+    href: "#",
+    label: "Facebook"
+  }, {
+    icon: Linkedin,
+    href: "#",
+    label: "LinkedIn"
+  }, {
+    icon: Youtube,
+    href: "#",
+    label: "YouTube"
+  }];
+  const quickLinks = [{
+    label: "Início",
+    href: "#inicio"
+  }, {
+    label: "Sobre",
+    href: "#sobre"
+  }, {
+    label: "Vantagens",
+    href: "#vantagens"
+  }, {
+    label: "Projetos",
+    href: "#projetos"
+  }, {
+    label: "Serviços",
+    href: "#servicos"
+  }, {
+    label: "Contato",
+    href: "#contato"
+  }];
+  return <footer className="bg-dark-bg text-secondary-foreground border-t border-secondary-foreground/10">
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Logo & Description */}
           <div className="lg:col-span-2">
-            <img src={logo} alt="Tudo Certo Engenharia" className="h-16 mb-6" />
+            <img alt="Tudo Certo Engenharia" className="h-16 mb-6" src="/lovable-uploads/51dc7b53-c772-475b-a308-c600c47571bd.png" />
             <p className="text-secondary-foreground/60 max-w-md mb-6">
               Especialistas em construção com tecnologia Steel Frame. 
               Transformamos seus projetos em realidade com qualidade, 
               sustentabilidade e inovação.
             </p>
             <div className="flex gap-4">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-lg bg-dark-card border border-secondary-foreground/10 flex items-center justify-center hover:border-primary hover:text-primary transition-all"
-                >
+              {socialLinks.map((social, index) => <a key={index} href={social.href} aria-label={social.label} className="w-10 h-10 rounded-lg bg-dark-card border border-secondary-foreground/10 flex items-center justify-center hover:border-primary hover:text-primary transition-all">
                   <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+                </a>)}
             </div>
           </div>
 
@@ -48,16 +59,11 @@ const Footer = () => {
           <div>
             <h4 className="font-display text-xl mb-6">Links Rápidos</h4>
             <ul className="space-y-3">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
-                  <a
-                    href={link.href}
-                    className="text-secondary-foreground/60 hover:text-primary transition-colors"
-                  >
+              {quickLinks.map((link, index) => <li key={index}>
+                  <a href={link.href} className="text-secondary-foreground/60 hover:text-primary transition-colors">
                     {link.label}
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
 
@@ -88,8 +94,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
