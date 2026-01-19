@@ -12,8 +12,8 @@ const Contact = () => {
     {
       icon: Mail,
       label: "E-mail",
-      value: "contato@tudocertoengenharia.com.br",
-      href: "mailto:contato@tudocertoengenharia.com.br",
+      value: "comercial@tudocertoeng.com.br",
+      href: "mailto:comercial@tudocertoeng.com.br",
     },
     {
       icon: MapPin,
