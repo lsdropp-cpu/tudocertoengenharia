@@ -18,7 +18,7 @@ const Contact = () => {
     {
       icon: MapPin,
       label: "Endereço",
-      value: "Sua Cidade, Estado - Brasil",
+      value: "Porto Alegre, Rio Grande do Sul - Brasil",
       href: "#",
     },
     {
