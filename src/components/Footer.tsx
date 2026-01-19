@@ -49,7 +49,7 @@ const Footer = () => {
               sustentabilidade e inovação.
             </p>
             <div className="flex gap-4">
-              {socialLinks.map((social, index) => <a key={index} href={social.href} aria-label={social.label} className="w-10 h-10 rounded-lg bg-dark-card border border-secondary-foreground/10 flex items-center justify-center hover:border-primary hover:text-primary transition-all">
+              {socialLinks.map((social, index) => <a key={index} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-10 h-10 rounded-lg bg-dark-card border border-secondary-foreground/10 flex items-center justify-center hover:border-primary hover:text-primary transition-all">
                   <social.icon className="w-5 h-5" />
                 </a>)}
             </div>
