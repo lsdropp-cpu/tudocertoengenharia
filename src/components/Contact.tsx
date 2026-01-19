@@ -6,8 +6,8 @@ const Contact = () => {
     {
       icon: Phone,
       label: "Telefone",
-      value: "Porto Alegre, Rio Grande do Sul - Brasil",
-      href: "tel:+5500000000000",
+      value: "(51) 98919-2443",
+      href: "tel:+5551989192443",
     },
     {
       icon: Mail,
