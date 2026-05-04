@@ -42,7 +42,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Logo & Description */}
           <div className="lg:col-span-2">
-            <img alt="Tudo Certo Engenharia" className="h-16 mb-6" src="/lovable-uploads/51dc7b53-c772-475b-a308-c600c47571bd.png" />
+            <img alt="Tudo Certo Engenharia" className="h-16 mb-6" src={logo} />
             <p className="text-secondary-foreground/60 max-w-md mb-6">
               Especialistas em construção com tecnologia Steel Frame. 
               Transformamos seus projetos em realidade com qualidade, 
