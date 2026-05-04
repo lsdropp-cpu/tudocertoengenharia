@@ -3,7 +3,7 @@ import logo from "@/assets/logo.png";
 const Footer = () => {
   const socialLinks = [{
     icon: Instagram,
-    href: "https://www.instagram.com/tudocerto.engenharia",
+    href: "https://www.instagram.com/tudocerto.steel_frame/",
     label: "Instagram"
   }, {
     icon: Facebook,

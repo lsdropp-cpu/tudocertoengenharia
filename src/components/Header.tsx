@@ -12,7 +12,7 @@ const Header = () => {
 
   const socialLinks = [
     { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "https://www.instagram.com/tudocerto.engenharia", label: "Instagram" },
+    { icon: Instagram, href: "https://www.instagram.com/tudocerto.steel_frame/", label: "Instagram" },
   ];
 
   return (
