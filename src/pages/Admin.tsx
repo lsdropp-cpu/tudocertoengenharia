@@ -65,6 +65,7 @@ const Admin = () => {
   const [userId, setUserId] = useState<string>("");
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mobileStage, setMobileStage] = useState<string>("novo");
   const selectedLead = useMemo(
     () => leads.find((l) => l.id === selectedId) || null,
     [leads, selectedId],
