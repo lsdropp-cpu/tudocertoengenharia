@@ -141,12 +141,13 @@ const Orcamento = () => {
     }
 
     setLoading(true);
-    const { nome, telefone, email, cidade } = parsed.data;
+    const { nome, telefone, email, cidade, mensagem } = parsed.data;
     const { error } = await supabase.from("leads").insert({
-      nome: nome as string,
-      telefone: telefone as string,
-      email: email as string,
-      cidade: cidade as string,
+      nome,
+      telefone,
+      email,
+      cidade,
+      mensagem: mensagem || null,
     });
     setLoading(false);
 
@@ -156,7 +157,7 @@ const Orcamento = () => {
     }
 
     setSent(true);
-    setForm({ nome: "", telefone: "", email: "", cidade: "" });
+    setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
   };
 
