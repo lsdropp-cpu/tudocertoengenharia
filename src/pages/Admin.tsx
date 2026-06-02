@@ -58,6 +58,204 @@ const formatPhone = (p: string) => {
   return p;
 };
 
+type StageDef = { id: string; label: string; accent: string };
+
+function MobileKanban({
+  stages,
+  grouped,
+  mobileStage,
+  setMobileStage,
+  totalLeads,
+  onSelect,
+  onMove,
+  onDelete,
+}: {
+  stages: StageDef[];
+  grouped: Record<string, Lead[]>;
+  mobileStage: string;
+  setMobileStage: (s: string) => void;
+  totalLeads: number;
+  onSelect: (id: string) => void;
+  onMove: (id: string, stage: string) => void;
+  onDelete: (id: string) => void;
+}) {
+  const idx = Math.max(0, stages.findIndex((s) => s.id === mobileStage));
+  const prev = () => setMobileStage(stages[(idx - 1 + stages.length) % stages.length].id);
+  const next = () => setMobileStage(stages[(idx + 1) % stages.length].id);
+
+  const touchRef = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    touchRef.current = { x: t.clientX, y: t.clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) next();
+      else prev();
+    }
+    touchRef.current = null;
+  };
+
+  const items = grouped[mobileStage] || [];
+  const stage = stages[idx];
+
+  return (
+    <div className="sm:hidden">
+      {/* Abas roláveis */}
+      <div className="flex gap-2 overflow-x-auto pb-3 -mx-2 px-2 snap-x scrollbar-thin">
+        {stages.map((s) => {
+          const count = (grouped[s.id] || []).length;
+          const active = mobileStage === s.id;
+          return (
+            <button
+              key={s.id}
+              onClick={() => setMobileStage(s.id)}
+              className={`shrink-0 snap-start px-3 py-2 rounded-lg border text-xs font-medium flex items-center gap-2 transition-all ${
+                active ? `${s.accent} scale-105` : "border-border bg-card/40 text-muted-foreground"
+              }`}
+            >
+              {s.label}
+              <span
+                className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                  active ? "bg-background/30" : "bg-muted text-foreground"
+                }`}
+              >
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Navegação + indicador de página */}
+      <div className="flex items-center justify-between gap-2 mb-3 px-1">
+        <button
+          onClick={prev}
+          aria-label="Estágio anterior"
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary px-2 py-1 rounded-md border border-border bg-card/40"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          {stages[(idx - 1 + stages.length) % stages.length].label}
+        </button>
+        <div className="flex gap-1">
+          {stages.map((s, i) => (
+            <span
+              key={s.id}
+              className={`h-1.5 rounded-full transition-all ${
+                i === idx ? "w-5 bg-primary" : "w-1.5 bg-muted-foreground/30"
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          onClick={next}
+          aria-label="Próximo estágio"
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary px-2 py-1 rounded-md border border-border bg-card/40"
+        >
+          {stages[(idx + 1) % stages.length].label}
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      <div className="text-[11px] text-muted-foreground mb-2 px-1 flex items-center justify-between">
+        <span>
+          <span className={`inline-block w-2 h-2 rounded-full mr-1.5 ${stage.accent.split(" ")[0]}`} />
+          {stage.label} · {items.length} {items.length === 1 ? "lead" : "leads"}
+        </span>
+        <span>Total: <span className="font-semibold text-foreground">{totalLeads}</span></span>
+      </div>
+
+      {/* Cards com swipe */}
+      <div
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        className="space-y-2 min-h-[40vh]"
+      >
+        {items.length === 0 ? (
+          <div className="text-sm text-muted-foreground text-center py-12 border border-dashed border-border rounded-xl">
+            Nenhum lead neste estágio
+            <div className="text-xs mt-2 opacity-70">← deslize para o lado →</div>
+          </div>
+        ) : (
+          items.map((lead) => (
+            <article
+              key={lead.id}
+              onClick={() => onSelect(lead.id)}
+              className="bg-card border border-border rounded-xl p-4 active:scale-[0.99] transition-transform"
+            >
+              <div className="flex items-start justify-between gap-2 mb-3">
+                <h3 className="font-semibold text-base leading-tight">{lead.nome}</h3>
+                <span className="flex items-center gap-1 text-[11px] text-muted-foreground shrink-0">
+                  <Clock className="w-3 h-3" />
+                  {new Date(lead.created_at).toLocaleDateString("pt-BR")}
+                </span>
+              </div>
+
+              <div className="space-y-2 text-sm">
+                <a
+                  href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-2 text-foreground"
+                >
+                  <Phone className="w-4 h-4 text-[#25D366] shrink-0" />
+                  {formatPhone(lead.telefone)}
+                </a>
+                <a
+                  href={`mailto:${lead.email}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-2 text-muted-foreground break-all"
+                >
+                  <Mail className="w-4 h-4 shrink-0" /> {lead.email}
+                </a>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="w-4 h-4 shrink-0" /> {lead.cidade}
+                </div>
+              </div>
+
+              {lead.mensagem ? (
+                <p className="mt-3 pt-3 border-t border-border/60 text-sm text-foreground/80 line-clamp-2">
+                  {lead.mensagem}
+                </p>
+              ) : null}
+
+              <div
+                className="mt-3 pt-3 border-t border-border/60 flex items-center gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <select
+                  value={normalizeStage(lead.estagio || lead.status)}
+                  onChange={(e) => onMove(lead.id, e.target.value)}
+                  className="flex-1 text-xs px-2 py-2 rounded-md bg-background border border-input"
+                >
+                  {stages.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      Mover para {s.label}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={() => onDelete(lead.id)}
+                  aria-label="Excluir"
+                  className="p-2 rounded-md hover:bg-destructive/10 text-destructive"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </article>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
 const Admin = () => {
   const navigate = useNavigate();
   const [leads, setLeads] = useState<Lead[]>([]);
