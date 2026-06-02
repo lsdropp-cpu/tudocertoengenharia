@@ -177,7 +177,7 @@ const Orcamento = () => {
 
           <div
             id="formulario"
-            className="bg-dark-card rounded-2xl p-8 md:p-10 border border-secondary-foreground/10 shadow-glow animate-scale-in lg:sticky lg:top-24"
+            className="bg-dark-card rounded-2xl p-6 sm:p-8 md:p-10 border border-secondary-foreground/10 shadow-glow animate-scale-in lg:sticky lg:top-24"
           >
             {sent ? (
               <div className="text-center py-10">
@@ -194,7 +194,7 @@ const Orcamento = () => {
               </div>
             ) : (
               <>
-                <h2 className="font-display text-3xl mb-2">Quero meu orçamento</h2>
+                <h2 className="font-display text-2xl sm:text-3xl mb-2">Quero meu orçamento</h2>
                 <p className="text-secondary-foreground/60 mb-6 text-sm">
                   Preencha e fale com um especialista.
                 </p>
