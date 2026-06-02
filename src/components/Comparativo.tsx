@@ -38,7 +38,7 @@ const Comparativo = () => {
               Comparativo
             </span>
             <h2 className="font-display text-3xl md:text-5xl mt-3 mb-5">
-              Vantagens do <span className="text-primary">Steel Frame</span>
+              <span className="text-white">Vantagens do</span> <span className="text-primary">Steel Frame</span>
             </h2>
             <p className="text-secondary-foreground/70 leading-relaxed">
               Veja um comparativo simples entre os métodos construtivos e tenha
