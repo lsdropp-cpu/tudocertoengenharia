@@ -18,9 +18,9 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#3d3d3d]">
       <div className="container mx-auto px-4">
-        <div className="flex items-center h-12">
-          {/* Social Icons - Left */}
-          <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center h-12 gap-3">
+          {/* Social Icons - Left (hidden on mobile to free space) */}
+          <div className="hidden sm:flex items-center gap-3 md:gap-4 shrink-0">
             {socialLinks.map((social, index) => (
               <a
                 key={index}
@@ -44,15 +44,15 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Navigation - Always visible */}
-          <nav className="flex items-center justify-center flex-1 gap-4 md:gap-8">
+          {/* Navigation - Always visible, scrollable on small screens */}
+          <nav className="flex items-center justify-center flex-1 gap-3 sm:gap-4 md:gap-8 overflow-x-auto no-scrollbar">
             {navLinks.map((link, index) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`text-xs md:text-sm font-medium transition-colors duration-300 ${
-                  index === 0 
-                    ? "text-primary" 
+                className={`text-[11px] sm:text-xs md:text-sm font-medium whitespace-nowrap transition-colors duration-300 ${
+                  index === 0
+                    ? "text-primary"
                     : "text-white/80 hover:text-primary"
                 }`}
               >
