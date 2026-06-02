@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, ShieldCheck } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.png";
 
 const schema = z.object({
   email: z.string().trim().email("E-mail inválido").max(200),
@@ -57,59 +58,104 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-hero-gradient text-secondary-foreground flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-dark-card rounded-2xl p-8 border border-secondary-foreground/10 shadow-glow">
-        <a href="/" className="font-display text-2xl tracking-wider block text-center mb-6">
-          TUDO <span className="text-primary">CERTO</span>
+    <div className="min-h-screen bg-hero-gradient text-secondary-foreground flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative glows */}
+      <div className="pointer-events-none absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-primary/10 blur-3xl" />
+
+      <div className="relative w-full max-w-md">
+        {/* Logo card */}
+        <a href="/" className="flex flex-col items-center gap-3 mb-6 group">
+          <div className="w-24 h-24 rounded-2xl bg-dark-card border border-primary/20 flex items-center justify-center shadow-glow group-hover:border-primary/50 transition-colors">
+            <img src={logo} alt="Tudo Certo Engenharia" className="w-16 h-16 object-contain" />
+          </div>
+          <span className="font-display text-xl tracking-[0.2em] text-secondary-foreground/90">
+            TUDO <span className="text-primary">CERTO</span>
+          </span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-secondary-foreground/40">
+            Engenharia · Steel Frame
+          </span>
         </a>
-        <h1 className="font-display text-3xl text-center mb-2">
-          {mode === "login" ? "Entrar" : "Criar conta"}
-        </h1>
-        <p className="text-sm text-secondary-foreground/60 text-center mb-6">
-          Acesso ao dashboard de leads
-        </p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm text-secondary-foreground/70 mb-2">E-mail</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 focus:border-primary focus:outline-none transition-colors"
-            />
+
+        <div className="bg-dark-card/80 backdrop-blur-xl rounded-2xl p-8 border border-secondary-foreground/10 shadow-glow">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <ShieldCheck size={18} className="text-primary" />
+            <h1 className="font-display text-2xl text-center">
+              {mode === "login" ? "Área restrita" : "Criar conta"}
+            </h1>
           </div>
-          <div>
-            <label className="block text-sm text-secondary-foreground/70 mb-2">Senha</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 pr-12 rounded-lg bg-dark-bg border border-secondary-foreground/10 focus:border-primary focus:outline-none transition-colors"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-foreground/60 hover:text-primary transition-colors"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+          <p className="text-sm text-secondary-foreground/60 text-center mb-6">
+            {mode === "login"
+              ? "Acesse o painel de gestão de leads"
+              : "Solicite acesso ao painel administrativo"}
+          </p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs uppercase tracking-wider text-secondary-foreground/60 mb-2">
+                E-mail
+              </label>
+              <div className="relative">
+                <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="seu@email.com"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+                />
+              </div>
             </div>
+
+            <div>
+              <label className="block text-xs uppercase tracking-wider text-secondary-foreground/60 mb-2">
+                Senha
+              </label>
+              <div className="relative">
+                <Lock size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-12 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-foreground/60 hover:text-primary transition-colors"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+
+            <Button type="submit" variant="hero" size="xl" className="w-full" disabled={loading}>
+              {loading ? "Carregando..." : mode === "login" ? "Entrar no painel" : "Criar conta"}
+            </Button>
+          </form>
+
+          <div className="my-6 flex items-center gap-3">
+            <div className="h-px flex-1 bg-secondary-foreground/10" />
+            <span className="text-[10px] uppercase tracking-widest text-secondary-foreground/40">ou</span>
+            <div className="h-px flex-1 bg-secondary-foreground/10" />
           </div>
-          <Button type="submit" variant="hero" size="xl" className="w-full" disabled={loading}>
-            {loading ? "Carregando..." : mode === "login" ? "Entrar" : "Criar conta"}
-          </Button>
-        </form>
-        <button
-          onClick={() => setMode(mode === "login" ? "signup" : "login")}
-          className="w-full mt-4 text-sm text-secondary-foreground/60 hover:text-primary transition-colors"
-        >
-          {mode === "login" ? "Não tem conta? Criar agora" : "Já tem conta? Entrar"}
-        </button>
+
+          <button
+            onClick={() => setMode(mode === "login" ? "signup" : "login")}
+            className="w-full text-sm text-secondary-foreground/70 hover:text-primary transition-colors"
+          >
+            {mode === "login" ? "Não tem conta? Criar agora" : "Já tem conta? Entrar"}
+          </button>
+        </div>
+
+        <p className="text-center text-xs text-secondary-foreground/40 mt-6">
+          © {new Date().getFullYear()} Tudo Certo Engenharia
+        </p>
       </div>
     </div>
   );
