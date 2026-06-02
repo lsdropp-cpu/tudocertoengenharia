@@ -31,11 +31,12 @@ const Auth = () => {
       return;
     }
     setLoading(true);
+    const creds = { email: parsed.data.email as string, password: parsed.data.password as string };
     const { error } =
       mode === "login"
-        ? await supabase.auth.signInWithPassword(parsed.data)
+        ? await supabase.auth.signInWithPassword(creds)
         : await supabase.auth.signUp({
-            ...parsed.data,
+            ...creds,
             options: { emailRedirectTo: `${window.location.origin}/admin` },
           });
     setLoading(false);
