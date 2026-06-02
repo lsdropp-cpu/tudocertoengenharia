@@ -65,6 +65,7 @@ const Admin = () => {
   const [userId, setUserId] = useState<string>("");
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [mobileStage, setMobileStage] = useState<string>("novo");
   const selectedLead = useMemo(
     () => leads.find((l) => l.id === selectedId) || null,
     [leads, selectedId],
@@ -202,7 +203,7 @@ const Admin = () => {
       </header>
 
       <main className="flex-1 container mx-auto px-2 sm:px-4 py-4 sm:py-6">
-        <div className="mb-4 flex items-center justify-between flex-wrap gap-2">
+        <div className="mb-4 hidden sm:flex items-center justify-between flex-wrap gap-2">
           <p className="text-sm text-muted-foreground">
             Arraste os cartões entre as colunas para atualizar o estágio.
           </p>
@@ -214,134 +215,246 @@ const Admin = () => {
         {loading ? (
           <p className="text-center text-muted-foreground py-12">Carregando...</p>
         ) : (
-          <div className="flex gap-3 overflow-x-auto pb-4 snap-x">
-            {STAGES.map((stage) => {
-              const items = grouped[stage.id] || [];
-              const isOver = dragOver === stage.id;
-              return (
-                <div
-                  key={stage.id}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    setDragOver(stage.id);
-                  }}
-                  onDragLeave={() => setDragOver((s) => (s === stage.id ? null : s))}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    const id = e.dataTransfer.getData("text/plain");
-                    setDragOver(null);
-                    if (id) moveLead(id, stage.id);
-                  }}
-                  className={`shrink-0 w-[88vw] sm:w-80 snap-start rounded-xl border bg-card/60 flex flex-col transition-colors ${
-                    isOver ? "border-primary bg-primary/5" : "border-border"
-                  }`}
-                >
-                  <div className="px-3 py-3 border-b border-border flex items-center justify-between sticky top-0 bg-card/95 backdrop-blur rounded-t-xl">
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs px-2 py-1 rounded-md border ${stage.accent}`}>
-                        {stage.label}
+          <>
+            {/* MOBILE: abas com 1 coluna por vez */}
+            <div className="sm:hidden">
+              <div className="flex gap-2 overflow-x-auto pb-3 -mx-2 px-2 snap-x">
+                {STAGES.map((stage) => {
+                  const count = (grouped[stage.id] || []).length;
+                  const active = mobileStage === stage.id;
+                  return (
+                    <button
+                      key={stage.id}
+                      onClick={() => setMobileStage(stage.id)}
+                      className={`shrink-0 snap-start px-3 py-2 rounded-lg border text-xs font-medium flex items-center gap-2 transition-all ${
+                        active
+                          ? `${stage.accent} scale-105`
+                          : "border-border bg-card/40 text-muted-foreground"
+                      }`}
+                    >
+                      {stage.label}
+                      <span
+                        className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                          active ? "bg-background/30" : "bg-muted text-foreground"
+                        }`}
+                      >
+                        {count}
                       </span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">{items.length}</span>
-                  </div>
+                    </button>
+                  );
+                })}
+              </div>
 
-                  <div className="p-2 space-y-2 max-h-[calc(100vh-220px)] overflow-y-auto">
-                    {items.length === 0 ? (
-                      <div className="text-xs text-muted-foreground text-center py-6">
-                        Sem leads
+              <div className="mt-2 text-xs text-muted-foreground mb-2 px-1">
+                Total: <span className="font-semibold text-foreground">{leads.length}</span> · Toque em um card para abrir
+              </div>
+
+              <div className="space-y-2">
+                {(grouped[mobileStage] || []).length === 0 ? (
+                  <div className="text-sm text-muted-foreground text-center py-12 border border-dashed border-border rounded-xl">
+                    Nenhum lead neste estágio
+                  </div>
+                ) : (
+                  (grouped[mobileStage] || []).map((lead) => (
+                    <article
+                      key={lead.id}
+                      onClick={() => setSelectedId(lead.id)}
+                      className="bg-card border border-border rounded-xl p-4 active:scale-[0.99] transition-transform"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <h3 className="font-semibold text-base leading-tight">{lead.nome}</h3>
+                        <span className="flex items-center gap-1 text-[11px] text-muted-foreground shrink-0">
+                          <Clock className="w-3 h-3" />
+                          {new Date(lead.created_at).toLocaleDateString("pt-BR")}
+                        </span>
                       </div>
-                    ) : (
-                      items.map((lead) => (
-                        <article
-                          key={lead.id}
-                          draggable
-                          onDragStart={(e) => {
-                            e.dataTransfer.setData("text/plain", lead.id);
-                            e.dataTransfer.effectAllowed = "move";
-                          }}
-                          onClick={() => setSelectedId(lead.id)}
-                          className="group bg-background border border-border rounded-lg p-3 cursor-pointer hover:border-primary/40 hover:shadow-md transition-all"
+
+                      <div className="space-y-2 text-sm">
+                        <a
+                          href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-2 text-foreground"
                         >
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <h3 className="font-semibold leading-tight">{lead.nome}</h3>
-                            <GripVertical
-                              className="w-4 h-4 text-muted-foreground/40 shrink-0 mt-0.5 cursor-grab active:cursor-grabbing"
-                              onClick={(e) => e.stopPropagation()}
-                            />
-                          </div>
+                          <Phone className="w-4 h-4 text-[#25D366] shrink-0" />
+                          {formatPhone(lead.telefone)}
+                        </a>
+                        <a
+                          href={`mailto:${lead.email}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex items-center gap-2 text-muted-foreground break-all"
+                        >
+                          <Mail className="w-4 h-4 shrink-0" /> {lead.email}
+                        </a>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <MapPin className="w-4 h-4 shrink-0" /> {lead.cidade}
+                        </div>
+                      </div>
 
-                          <div className="space-y-1 text-xs text-muted-foreground">
-                            <a
-                              href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1.5 hover:text-primary break-all"
-                            >
-                              <Phone className="w-3.5 h-3.5 shrink-0" />
-                              {formatPhone(lead.telefone)}
-                            </a>
-                            <a
-                              href={`mailto:${lead.email}`}
-                              onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1.5 hover:text-primary break-all"
-                            >
-                              <Mail className="w-3.5 h-3.5 shrink-0" /> {lead.email}
-                            </a>
-                            <div className="flex items-center gap-1.5">
-                              <MapPin className="w-3.5 h-3.5 shrink-0" /> {lead.cidade}
-                            </div>
-                          </div>
+                      {lead.mensagem ? (
+                        <p className="mt-3 pt-3 border-t border-border/60 text-sm text-foreground/80 line-clamp-2">
+                          {lead.mensagem}
+                        </p>
+                      ) : null}
 
-                          {lead.mensagem ? (
-                            <div className="mt-2 pt-2 border-t border-border/60 text-xs text-foreground/80 flex gap-1.5">
-                              <MessageSquare className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground" />
-                              <p className="leading-snug whitespace-pre-wrap break-words line-clamp-3">
-                                {lead.mensagem}
-                              </p>
-                            </div>
-                          ) : null}
+                      <div className="mt-3 pt-3 border-t border-border/60 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          value={normalizeStage(lead.estagio || lead.status)}
+                          onChange={(e) => moveLead(lead.id, e.target.value)}
+                          className="flex-1 text-xs px-2 py-2 rounded-md bg-background border border-input"
+                        >
+                          {STAGES.map((s) => (
+                            <option key={s.id} value={s.id}>
+                              Mover para {s.label}
+                            </option>
+                          ))}
+                        </select>
+                        <button
+                          onClick={() => handleDelete(lead.id)}
+                          aria-label="Excluir"
+                          className="p-2 rounded-md hover:bg-destructive/10 text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </article>
+                  ))
+                )}
+              </div>
+            </div>
 
-                          <div className="mt-2 pt-2 border-t border-border/60 flex items-center justify-between gap-2">
-                            <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                              <Clock className="w-3 h-3" />
-                              {new Date(lead.created_at).toLocaleDateString("pt-BR")}
-                            </span>
-                            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                              <select
-                                value={normalizeStage(lead.estagio || lead.status)}
-                                onChange={(e) => moveLead(lead.id, e.target.value)}
+            {/* DESKTOP: kanban */}
+            <div className="hidden sm:flex gap-3 overflow-x-auto pb-4 snap-x">
+              {STAGES.map((stage) => {
+                const items = grouped[stage.id] || [];
+                const isOver = dragOver === stage.id;
+                return (
+                  <div
+                    key={stage.id}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setDragOver(stage.id);
+                    }}
+                    onDragLeave={() => setDragOver((s) => (s === stage.id ? null : s))}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const id = e.dataTransfer.getData("text/plain");
+                      setDragOver(null);
+                      if (id) moveLead(id, stage.id);
+                    }}
+                    className={`shrink-0 w-80 snap-start rounded-xl border bg-card/60 flex flex-col transition-colors ${
+                      isOver ? "border-primary bg-primary/5" : "border-border"
+                    }`}
+                  >
+                    <div className="px-3 py-3 border-b border-border flex items-center justify-between sticky top-0 bg-card/95 backdrop-blur rounded-t-xl">
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs px-2 py-1 rounded-md border ${stage.accent}`}>
+                          {stage.label}
+                        </span>
+                      </div>
+                      <span className="text-xs text-muted-foreground">{items.length}</span>
+                    </div>
+
+                    <div className="p-2 space-y-2 max-h-[calc(100vh-220px)] overflow-y-auto">
+                      {items.length === 0 ? (
+                        <div className="text-xs text-muted-foreground text-center py-6">
+                          Sem leads
+                        </div>
+                      ) : (
+                        items.map((lead) => (
+                          <article
+                            key={lead.id}
+                            draggable
+                            onDragStart={(e) => {
+                              e.dataTransfer.setData("text/plain", lead.id);
+                              e.dataTransfer.effectAllowed = "move";
+                            }}
+                            onClick={() => setSelectedId(lead.id)}
+                            className="group bg-background border border-border rounded-lg p-3 cursor-pointer hover:border-primary/40 hover:shadow-md transition-all"
+                          >
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <h3 className="font-semibold leading-tight">{lead.nome}</h3>
+                              <GripVertical
+                                className="w-4 h-4 text-muted-foreground/40 shrink-0 mt-0.5 cursor-grab active:cursor-grabbing"
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-[11px] px-1.5 py-1 rounded bg-background border border-input"
-                              >
-                                {STAGES.map((s) => (
-                                  <option key={s.id} value={s.id}>
-                                    {s.label}
-                                  </option>
-                                ))}
-                              </select>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDelete(lead.id);
-                                }}
-                                aria-label="Excluir"
-                                className="p-1 rounded hover:bg-destructive/10 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
+                              />
                             </div>
-                          </div>
-                        </article>
-                      ))
-                    )}
+
+                            <div className="space-y-1 text-xs text-muted-foreground">
+                              <a
+                                href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="flex items-center gap-1.5 hover:text-primary break-all"
+                              >
+                                <Phone className="w-3.5 h-3.5 shrink-0" />
+                                {formatPhone(lead.telefone)}
+                              </a>
+                              <a
+                                href={`mailto:${lead.email}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="flex items-center gap-1.5 hover:text-primary break-all"
+                              >
+                                <Mail className="w-3.5 h-3.5 shrink-0" /> {lead.email}
+                              </a>
+                              <div className="flex items-center gap-1.5">
+                                <MapPin className="w-3.5 h-3.5 shrink-0" /> {lead.cidade}
+                              </div>
+                            </div>
+
+                            {lead.mensagem ? (
+                              <div className="mt-2 pt-2 border-t border-border/60 text-xs text-foreground/80 flex gap-1.5">
+                                <MessageSquare className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground" />
+                                <p className="leading-snug whitespace-pre-wrap break-words line-clamp-3">
+                                  {lead.mensagem}
+                                </p>
+                              </div>
+                            ) : null}
+
+                            <div className="mt-2 pt-2 border-t border-border/60 flex items-center justify-between gap-2">
+                              <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                                <Clock className="w-3 h-3" />
+                                {new Date(lead.created_at).toLocaleDateString("pt-BR")}
+                              </span>
+                              <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                                <select
+                                  value={normalizeStage(lead.estagio || lead.status)}
+                                  onChange={(e) => moveLead(lead.id, e.target.value)}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-[11px] px-1.5 py-1 rounded bg-background border border-input"
+                                >
+                                  {STAGES.map((s) => (
+                                    <option key={s.id} value={s.id}>
+                                      {s.label}
+                                    </option>
+                                  ))}
+                                </select>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete(lead.id);
+                                  }}
+                                  aria-label="Excluir"
+                                  className="p-1 rounded hover:bg-destructive/10 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          </article>
+                        ))
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </main>
+
 
       <Dialog open={!!selectedLead} onOpenChange={(o) => !o && setSelectedId(null)}>
         <DialogContent className="max-w-lg">
