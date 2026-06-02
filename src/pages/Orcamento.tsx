@@ -265,7 +265,7 @@ const Orcamento = () => {
                       name="mensagem"
                       value={form.mensagem}
                       onChange={handleChange}
-                      placeholder="Ex: casa de 120m², 3 quartos, terreno em Porto Alegre..."
+                      placeholder="Ex: Reforma em Steel Frame e Drywall de 120m²"
                       rows={4}
                       maxLength={2000}
                       className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors resize-y"
