@@ -72,6 +72,40 @@ const vantagens = [
   { icon: TrendingUp, title: "Melhor custo-benefício", desc: "Economia em fundação, mão de obra e prazo." },
 ];
 
+const BenefitHighlights = ({ className = "" }: { className?: string }) => (
+  <div className={className}>
+    <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 mb-5 sm:mb-8">
+      {beneficios.map((b, i) => (
+        <div
+          key={i}
+          className="flex min-w-0 gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl bg-dark-card/60 border border-secondary-foreground/10"
+        >
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+            <b.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+          </div>
+          <div className="min-w-0">
+            <div className="font-semibold text-sm sm:text-base leading-snug">{b.title}</div>
+            <div className="text-xs sm:text-sm text-secondary-foreground/60 leading-snug">{b.desc}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <ul className="space-y-2 text-sm sm:text-base text-secondary-foreground/80">
+      {[
+        "Atendimento personalizado em Porto Alegre e região",
+        "Orçamento gratuito e sem compromisso",
+        "Equipe especializada em Steel Frame",
+      ].map((item, i) => (
+        <li key={i} className="flex min-w-0 items-start gap-2">
+          <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <span className="min-w-0 leading-relaxed">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
 const Orcamento = () => {
   const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "" });
   const [loading, setLoading] = useState(false);
@@ -117,7 +151,7 @@ const Orcamento = () => {
   };
 
   return (
-    <div className="min-h-screen bg-hero-gradient text-secondary-foreground">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-hero-gradient text-secondary-foreground">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-[#3d3d3d]/95 backdrop-blur border-b border-secondary-foreground/10">
         <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-center">
@@ -128,56 +162,28 @@ const Orcamento = () => {
       </header>
 
       {/* Hero + Form */}
-      <section className="container mx-auto px-4 py-8 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          <div className="animate-fade-in">
-            <span className="inline-block text-primary font-semibold uppercase tracking-wider text-xs sm:text-sm mb-3">
+      <section className="container mx-auto px-4 py-6 sm:py-8 lg:py-16">
+        <div className="grid min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] gap-6 lg:gap-12 items-start">
+          <div className="min-w-0 animate-fade-in">
+            <span className="inline-block text-primary font-semibold uppercase tracking-wider text-[11px] sm:text-sm mb-3">
               Construa em Steel Frame
             </span>
-            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-4 sm:mb-6">
+            <h1 className="font-display text-[2.15rem] sm:text-4xl md:text-5xl lg:text-6xl leading-[0.95] mb-4 sm:mb-6 break-words">
               SEU PROJETO PRONTO
               <br />
               <span className="text-primary">EM ATÉ 3X MENOS TEMPO</span>
             </h1>
-            <p className="text-secondary-foreground/70 text-base sm:text-lg mb-6 sm:mb-8 max-w-lg">
+            <p className="text-secondary-foreground/70 text-sm sm:text-lg leading-relaxed mb-5 sm:mb-8 max-w-lg">
               Solicite um orçamento sem compromisso e descubra como o Steel Frame
               pode transformar sua obra com mais qualidade, menos prazo e custo previsível.
             </p>
 
-            <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              {beneficios.map((b, i) => (
-                <div
-                  key={i}
-                  className="flex gap-3 p-4 rounded-xl bg-dark-card/60 border border-secondary-foreground/10"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <b.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-semibold">{b.title}</div>
-                    <div className="text-sm text-secondary-foreground/60">{b.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <ul className="space-y-2 text-secondary-foreground/80">
-              {[
-                "Atendimento personalizado em Porto Alegre e região",
-                "Orçamento gratuito e sem compromisso",
-                "Equipe especializada em Steel Frame",
-              ].map((item, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            <BenefitHighlights className="hidden lg:block" />
           </div>
 
           <div
             id="formulario"
-            className="bg-dark-card rounded-2xl p-6 sm:p-8 md:p-10 border border-secondary-foreground/10 shadow-glow animate-scale-in lg:sticky lg:top-24"
+            className="w-full min-w-0 max-w-md mx-auto lg:max-w-none bg-dark-card rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-secondary-foreground/10 shadow-glow animate-scale-in lg:sticky lg:top-24"
           >
             {sent ? (
               <div className="text-center py-10">
@@ -194,11 +200,11 @@ const Orcamento = () => {
               </div>
             ) : (
               <>
-                <h2 className="font-display text-2xl sm:text-3xl mb-2">Quero meu orçamento</h2>
-                <p className="text-secondary-foreground/60 mb-6 text-sm">
+                <h2 className="font-display text-2xl sm:text-3xl mb-2 leading-none">Quero meu orçamento</h2>
+                <p className="text-secondary-foreground/60 mb-5 sm:mb-6 text-sm">
                   Preencha e fale com um especialista.
                 </p>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
                   {[
                     { name: "nome", label: "Nome completo", type: "text", placeholder: "Seu nome" },
                     { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "(00) 00000-0000" },
@@ -206,7 +212,7 @@ const Orcamento = () => {
                     { name: "cidade", label: "Cidade", type: "text", placeholder: "Sua cidade" },
                   ].map((f) => (
                     <div key={f.name}>
-                      <label className="block text-sm text-secondary-foreground/70 mb-2">{f.label}</label>
+                      <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{f.label}</label>
                       <input
                         name={f.name}
                         type={f.type}
@@ -214,11 +220,11 @@ const Orcamento = () => {
                         value={(form as any)[f.name]}
                         onChange={handleChange}
                         placeholder={f.placeholder}
-                        className="w-full px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
+                        className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
                       />
                     </div>
                   ))}
-                  <Button type="submit" variant="hero" size="xl" className="w-full" disabled={loading}>
+                  <Button type="submit" variant="hero" size="xl" className="w-full px-3 text-sm sm:text-lg tracking-wide whitespace-normal leading-tight" disabled={loading}>
                     {loading ? "Enviando..." : (<>Quero meu orçamento <Send className="ml-2 w-5 h-5" /></>)}
                   </Button>
                   <p className="text-xs text-secondary-foreground/50 text-center">
@@ -229,6 +235,7 @@ const Orcamento = () => {
             )}
           </div>
         </div>
+        <BenefitHighlights className="mt-6 lg:hidden" />
       </section>
 
       <Comparativo />
