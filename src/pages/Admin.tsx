@@ -259,11 +259,15 @@ const Admin = () => {
                             e.dataTransfer.setData("text/plain", lead.id);
                             e.dataTransfer.effectAllowed = "move";
                           }}
-                          className="group bg-background border border-border rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-primary/40 transition-colors"
+                          onClick={() => setSelectedId(lead.id)}
+                          className="group bg-background border border-border rounded-lg p-3 cursor-pointer hover:border-primary/40 hover:shadow-md transition-all"
                         >
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <h3 className="font-semibold leading-tight">{lead.nome}</h3>
-                            <GripVertical className="w-4 h-4 text-muted-foreground/40 shrink-0 mt-0.5" />
+                            <GripVertical
+                              className="w-4 h-4 text-muted-foreground/40 shrink-0 mt-0.5 cursor-grab active:cursor-grabbing"
+                              onClick={(e) => e.stopPropagation()}
+                            />
                           </div>
 
                           <div className="space-y-1 text-xs text-muted-foreground">
@@ -271,6 +275,7 @@ const Admin = () => {
                               href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
                               target="_blank"
                               rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                               className="flex items-center gap-1.5 hover:text-primary break-all"
                             >
                               <Phone className="w-3.5 h-3.5 shrink-0" />
@@ -278,6 +283,7 @@ const Admin = () => {
                             </a>
                             <a
                               href={`mailto:${lead.email}`}
+                              onClick={(e) => e.stopPropagation()}
                               className="flex items-center gap-1.5 hover:text-primary break-all"
                             >
                               <Mail className="w-3.5 h-3.5 shrink-0" /> {lead.email}
@@ -290,7 +296,7 @@ const Admin = () => {
                           {lead.mensagem ? (
                             <div className="mt-2 pt-2 border-t border-border/60 text-xs text-foreground/80 flex gap-1.5">
                               <MessageSquare className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground" />
-                              <p className="leading-snug whitespace-pre-wrap break-words line-clamp-4">
+                              <p className="leading-snug whitespace-pre-wrap break-words line-clamp-3">
                                 {lead.mensagem}
                               </p>
                             </div>
@@ -301,10 +307,11 @@ const Admin = () => {
                               <Clock className="w-3 h-3" />
                               {new Date(lead.created_at).toLocaleDateString("pt-BR")}
                             </span>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                               <select
                                 value={normalizeStage(lead.estagio || lead.status)}
                                 onChange={(e) => moveLead(lead.id, e.target.value)}
+                                onClick={(e) => e.stopPropagation()}
                                 className="text-[11px] px-1.5 py-1 rounded bg-background border border-input"
                               >
                                 {STAGES.map((s) => (
@@ -314,7 +321,10 @@ const Admin = () => {
                                 ))}
                               </select>
                               <button
-                                onClick={() => handleDelete(lead.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(lead.id);
+                                }}
                                 aria-label="Excluir"
                                 className="p-1 rounded hover:bg-destructive/10 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
                               >
