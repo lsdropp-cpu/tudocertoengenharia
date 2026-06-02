@@ -120,9 +120,9 @@ const Orcamento = () => {
     <div className="min-h-screen bg-hero-gradient text-secondary-foreground">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-[#3d3d3d]/95 backdrop-blur border-b border-secondary-foreground/10">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-center">
+        <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-center">
           <a href="/" className="flex items-center">
-            <img src={logo} alt="Tudo Certo Engenharia" className="h-14 md:h-16 w-auto" />
+            <img src={logo} alt="Tudo Certo Engenharia" className="h-10 md:h-16 w-auto" />
           </a>
         </div>
       </header>
