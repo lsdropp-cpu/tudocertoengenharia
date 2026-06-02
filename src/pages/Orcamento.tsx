@@ -40,7 +40,8 @@ const Orcamento = () => {
     }
 
     setLoading(true);
-    const { error } = await supabase.from("leads").insert(parsed.data);
+    const { nome, telefone, email, cidade } = parsed.data;
+    const { error } = await supabase.from("leads").insert({ nome: nome!, telefone: telefone!, email: email!, cidade: cidade! });
     setLoading(false);
 
     if (error) {
