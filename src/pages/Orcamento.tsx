@@ -30,9 +30,17 @@ import Comparativo from "@/components/Comparativo";
 
 const leadSchema = z.object({
   nome: z.string().trim().min(2, "Informe seu nome").max(200),
-  telefone: z.string().trim().min(8, "Telefone inválido").max(50),
-  email: z.string().trim().email("E-mail inválido").max(200),
+  telefone: z
+    .string()
+    .trim()
+    .regex(/^\d{10,11}$/, "Telefone deve ter DDD + número (10 ou 11 dígitos). Ex: 51989192443"),
+  email: z
+    .string()
+    .trim()
+    .max(200)
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, "Informe um e-mail válido. Ex: nome@dominio.com"),
   cidade: z.string().trim().min(2, "Informe sua cidade").max(200),
+  mensagem: z.string().trim().max(2000).optional(),
 });
 
 const beneficios = [
@@ -107,12 +115,18 @@ const BenefitHighlights = ({ className = "" }: { className?: string }) => (
 );
 
 const Orcamento = () => {
-  const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "" });
+  const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name === "telefone") {
+      setForm({ ...form, telefone: value.replace(/\D/g, "").slice(0, 11) });
+      return;
+    }
+    setForm({ ...form, [name]: value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,12 +141,13 @@ const Orcamento = () => {
     }
 
     setLoading(true);
-    const { nome, telefone, email, cidade } = parsed.data;
+    const { nome, telefone, email, cidade, mensagem } = parsed.data;
     const { error } = await supabase.from("leads").insert({
-      nome: nome as string,
-      telefone: telefone as string,
-      email: email as string,
-      cidade: cidade as string,
+      nome,
+      telefone,
+      email,
+      cidade,
+      mensagem: mensagem || null,
     });
     setLoading(false);
 
@@ -142,7 +157,7 @@ const Orcamento = () => {
     }
 
     setSent(true);
-    setForm({ nome: "", telefone: "", email: "", cidade: "" });
+    setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
   };
 
@@ -222,10 +237,10 @@ const Orcamento = () => {
                 <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
                   {[
                     { name: "nome", label: "Nome completo", type: "text", placeholder: "Seu nome" },
-                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "(00) 00000-0000" },
-                    { name: "email", label: "E-mail", type: "email", placeholder: "seu@email.com" },
+                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "51989192443", inputMode: "numeric", pattern: "[0-9]{10,11}", maxLength: 11 },
+                    { name: "email", label: "E-mail", type: "email", placeholder: "nome@dominio.com" },
                     { name: "cidade", label: "Cidade", type: "text", placeholder: "Sua cidade" },
-                  ].map((f) => (
+                  ].map((f: any) => (
                     <div key={f.name}>
                       <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{f.label}</label>
                       <input
@@ -235,10 +250,27 @@ const Orcamento = () => {
                         value={(form as any)[f.name]}
                         onChange={handleChange}
                         placeholder={f.placeholder}
+                        inputMode={f.inputMode}
+                        pattern={f.pattern}
+                        maxLength={f.maxLength}
                         className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
                       />
                     </div>
                   ))}
+                  <div>
+                    <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">
+                      Conte-nos um pouco sobre o seu projeto
+                    </label>
+                    <textarea
+                      name="mensagem"
+                      value={form.mensagem}
+                      onChange={handleChange}
+                      placeholder="Ex: casa de 120m², 3 quartos, terreno em Porto Alegre..."
+                      rows={4}
+                      maxLength={2000}
+                      className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors resize-y"
+                    />
+                  </div>
                   <Button type="submit" variant="hero" size="xl" className="w-full px-3 text-sm sm:text-lg tracking-wide whitespace-normal leading-tight" disabled={loading}>
                     {loading ? "Enviando..." : (<>Quero meu orçamento <Send className="ml-2 w-5 h-5" /></>)}
                   </Button>
