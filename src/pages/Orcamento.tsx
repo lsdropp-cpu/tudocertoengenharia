@@ -26,6 +26,7 @@ import projetoCasa from "@/assets/projeto-casa.png";
 import projetoResidencial from "@/assets/projeto-residencial.png";
 import projetoComercial from "@/assets/projeto-comercial.png";
 import projetoObra from "@/assets/projeto-obra.png";
+import Comparativo from "@/components/Comparativo";
 
 const leadSchema = z.object({
   nome: z.string().trim().min(2, "Informe seu nome").max(200),
@@ -298,6 +299,8 @@ const Orcamento = () => {
           </div>
         </div>
       </section>
+
+      <Comparativo />
 
       {/* Projetos realizados */}
       <section className="py-16 lg:py-24 bg-dark-bg">
