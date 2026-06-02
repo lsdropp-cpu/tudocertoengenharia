@@ -64,6 +64,11 @@ const Admin = () => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
   const [dragOver, setDragOver] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selectedLead = useMemo(
+    () => leads.find((l) => l.id === selectedId) || null,
+    [leads, selectedId],
+  );
 
   const fetchLeads = async () => {
     setLoading(true);
