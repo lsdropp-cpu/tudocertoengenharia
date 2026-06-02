@@ -315,14 +315,71 @@ const Admin = () => {
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
 
-  // Realtime new leads
+  // Pede permissão de notificação ao virar admin
+  useEffect(() => {
+    if (!isAdmin) return;
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, [isAdmin]);
+
+  // Realtime: dispara notificação ao chegar lead novo
   useEffect(() => {
     if (!isAdmin) return;
     const channel = supabase
       .channel("leads-changes")
-      .on("postgres_changes", { event: "*", schema: "public", table: "leads" }, () => {
-        fetchLeads();
-      })
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "leads" },
+        (payload) => {
+          fetchLeads();
+          const novo = payload.new as Lead;
+          // Toast no app
+          toast({
+            title: "🔔 Novo lead!",
+            description: `${novo.nome} — ${novo.cidade}`,
+          });
+          // Som de aviso
+          try {
+            const AudioCtx =
+              (window as any).AudioContext || (window as any).webkitAudioContext;
+            if (AudioCtx) {
+              const ctx = new AudioCtx();
+              const o = ctx.createOscillator();
+              const g = ctx.createGain();
+              o.connect(g);
+              g.connect(ctx.destination);
+              o.frequency.value = 880;
+              g.gain.setValueAtTime(0.0001, ctx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + 0.02);
+              g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+              o.start();
+              o.stop(ctx.currentTime + 0.5);
+            }
+          } catch {}
+          // Notificação nativa do sistema (se permitido)
+          if ("Notification" in window && Notification.permission === "granted") {
+            try {
+              new Notification("Novo lead — Tudo Certo", {
+                body: `${novo.nome} (${novo.cidade}) - ${novo.telefone}`,
+                icon: "/icon-192.png",
+                badge: "/icon-192.png",
+                tag: `lead-${novo.id}`,
+              });
+            } catch {}
+          }
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "leads" },
+        () => fetchLeads(),
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "leads" },
+        () => fetchLeads(),
+      )
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
