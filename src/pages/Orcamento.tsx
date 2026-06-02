@@ -237,7 +237,7 @@ const Orcamento = () => {
                 <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
                   {[
                     { name: "nome", label: "Nome completo", type: "text", placeholder: "Seu nome" },
-                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "51989192443", inputMode: "numeric", pattern: "[0-9]{10,11}", maxLength: 11 },
+                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "DDD + número (ex: 11987654321)", inputMode: "numeric", pattern: "[0-9]{10,11}", maxLength: 11 },
                     { name: "email", label: "E-mail", type: "email", placeholder: "nome@dominio.com" },
                     { name: "cidade", label: "Cidade", type: "text", placeholder: "Sua cidade" },
                   ].map((f: any) => (
