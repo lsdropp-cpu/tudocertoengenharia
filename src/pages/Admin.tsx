@@ -4,6 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   LogOut,
   Mail,
   Phone,
@@ -13,6 +20,7 @@ import {
   MessageSquare,
   Clock,
   GripVertical,
+  ExternalLink,
 } from "lucide-react";
 
 interface Lead {
