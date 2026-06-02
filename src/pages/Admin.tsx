@@ -342,6 +342,109 @@ const Admin = () => {
           </div>
         )}
       </main>
+
+      <Dialog open={!!selectedLead} onOpenChange={(o) => !o && setSelectedId(null)}>
+        <DialogContent className="max-w-lg">
+          {selectedLead && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-display">{selectedLead.nome}</DialogTitle>
+                <DialogDescription>
+                  Lead recebido em{" "}
+                  {new Date(selectedLead.created_at).toLocaleString("pt-BR")}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 mt-2">
+                <div className="flex flex-wrap gap-2">
+                  {STAGES.map((s) => {
+                    const active = normalizeStage(selectedLead.estagio || selectedLead.status) === s.id;
+                    return (
+                      <button
+                        key={s.id}
+                        onClick={() => moveLead(selectedLead.id, s.id)}
+                        className={`text-xs px-2.5 py-1 rounded-md border transition-colors ${
+                          active ? s.accent : "border-border text-muted-foreground hover:border-primary/40"
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <a
+                    href={`https://wa.me/55${selectedLead.telefone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                      `Olá ${selectedLead.nome.split(" ")[0]}, falo da Tudo Certo Engenharia sobre o seu pedido de orçamento.`,
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors text-sm"
+                  >
+                    <Phone className="w-4 h-4 text-primary" />
+                    <div className="min-w-0">
+                      <div className="text-xs text-muted-foreground">WhatsApp</div>
+                      <div className="font-medium truncate">{formatPhone(selectedLead.telefone)}</div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground ml-auto" />
+                  </a>
+                  <a
+                    href={`mailto:${selectedLead.email}`}
+                    className="flex items-center gap-2 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors text-sm"
+                  >
+                    <Mail className="w-4 h-4 text-primary" />
+                    <div className="min-w-0">
+                      <div className="text-xs text-muted-foreground">E-mail</div>
+                      <div className="font-medium truncate">{selectedLead.email}</div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground ml-auto" />
+                  </a>
+                  <div className="flex items-center gap-2 p-3 rounded-lg border border-border text-sm sm:col-span-2">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    <div>
+                      <div className="text-xs text-muted-foreground">Cidade</div>
+                      <div className="font-medium">{selectedLead.cidade}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-border p-4 bg-muted/30">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                    <MessageSquare className="w-3.5 h-3.5" /> Sobre o projeto
+                  </div>
+                  {selectedLead.mensagem ? (
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                      {selectedLead.mensagem}
+                    </p>
+                  ) : (
+                    <p className="text-sm italic text-muted-foreground">
+                      O lead não escreveu nenhuma descrição.
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex justify-between gap-2 pt-2 border-t border-border">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      handleDelete(selectedLead.id);
+                      setSelectedId(null);
+                    }}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" /> Excluir lead
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => setSelectedId(null)}>
+                    Fechar
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
