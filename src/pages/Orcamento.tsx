@@ -119,13 +119,10 @@ const Orcamento = () => {
     <div className="min-h-screen bg-hero-gradient text-secondary-foreground">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-[#3d3d3d]/95 backdrop-blur border-b border-secondary-foreground/10">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3">
-            <img src={logo} alt="Tudo Certo Engenharia" className="h-9 w-auto" />
+        <div className="container mx-auto px-4 h-20 flex items-center justify-center">
+          <a href="/" className="flex items-center">
+            <img src={logo} alt="Tudo Certo Engenharia" className="h-14 md:h-16 w-auto" />
           </a>
-          <Button variant="hero" size="sm" onClick={scrollToForm}>
-            Solicitar orçamento
-          </Button>
         </div>
       </header>
 
