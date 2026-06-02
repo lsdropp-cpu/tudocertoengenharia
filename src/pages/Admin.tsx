@@ -218,113 +218,18 @@ const Admin = () => {
           <p className="text-center text-muted-foreground py-12">Carregando...</p>
         ) : (
           <>
-            {/* MOBILE: abas com 1 coluna por vez */}
-            <div className="sm:hidden">
-              <div className="flex gap-2 overflow-x-auto pb-3 -mx-2 px-2 snap-x">
-                {STAGES.map((stage) => {
-                  const count = (grouped[stage.id] || []).length;
-                  const active = mobileStage === stage.id;
-                  return (
-                    <button
-                      key={stage.id}
-                      onClick={() => setMobileStage(stage.id)}
-                      className={`shrink-0 snap-start px-3 py-2 rounded-lg border text-xs font-medium flex items-center gap-2 transition-all ${
-                        active
-                          ? `${stage.accent} scale-105`
-                          : "border-border bg-card/40 text-muted-foreground"
-                      }`}
-                    >
-                      {stage.label}
-                      <span
-                        className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                          active ? "bg-background/30" : "bg-muted text-foreground"
-                        }`}
-                      >
-                        {count}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+            {/* MOBILE: abas + swipe entre estágios */}
+            <MobileKanban
+              stages={STAGES}
+              grouped={grouped}
+              mobileStage={mobileStage}
+              setMobileStage={setMobileStage}
+              totalLeads={leads.length}
+              onSelect={(id) => setSelectedId(id)}
+              onMove={moveLead}
+              onDelete={handleDelete}
+            />
 
-              <div className="mt-2 text-xs text-muted-foreground mb-2 px-1">
-                Total: <span className="font-semibold text-foreground">{leads.length}</span> · Toque em um card para abrir
-              </div>
-
-              <div className="space-y-2">
-                {(grouped[mobileStage] || []).length === 0 ? (
-                  <div className="text-sm text-muted-foreground text-center py-12 border border-dashed border-border rounded-xl">
-                    Nenhum lead neste estágio
-                  </div>
-                ) : (
-                  (grouped[mobileStage] || []).map((lead) => (
-                    <article
-                      key={lead.id}
-                      onClick={() => setSelectedId(lead.id)}
-                      className="bg-card border border-border rounded-xl p-4 active:scale-[0.99] transition-transform"
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <h3 className="font-semibold text-base leading-tight">{lead.nome}</h3>
-                        <span className="flex items-center gap-1 text-[11px] text-muted-foreground shrink-0">
-                          <Clock className="w-3 h-3" />
-                          {new Date(lead.created_at).toLocaleDateString("pt-BR")}
-                        </span>
-                      </div>
-
-                      <div className="space-y-2 text-sm">
-                        <a
-                          href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-2 text-foreground"
-                        >
-                          <Phone className="w-4 h-4 text-[#25D366] shrink-0" />
-                          {formatPhone(lead.telefone)}
-                        </a>
-                        <a
-                          href={`mailto:${lead.email}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-2 text-muted-foreground break-all"
-                        >
-                          <Mail className="w-4 h-4 shrink-0" /> {lead.email}
-                        </a>
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                          <MapPin className="w-4 h-4 shrink-0" /> {lead.cidade}
-                        </div>
-                      </div>
-
-                      {lead.mensagem ? (
-                        <p className="mt-3 pt-3 border-t border-border/60 text-sm text-foreground/80 line-clamp-2">
-                          {lead.mensagem}
-                        </p>
-                      ) : null}
-
-                      <div className="mt-3 pt-3 border-t border-border/60 flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
-                        <select
-                          value={normalizeStage(lead.estagio || lead.status)}
-                          onChange={(e) => moveLead(lead.id, e.target.value)}
-                          className="flex-1 text-xs px-2 py-2 rounded-md bg-background border border-input"
-                        >
-                          {STAGES.map((s) => (
-                            <option key={s.id} value={s.id}>
-                              Mover para {s.label}
-                            </option>
-                          ))}
-                        </select>
-                        <button
-                          onClick={() => handleDelete(lead.id)}
-                          aria-label="Excluir"
-                          className="p-2 rounded-md hover:bg-destructive/10 text-destructive"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </article>
-                  ))
-                )}
-              </div>
-            </div>
 
             {/* DESKTOP: kanban */}
             <div className="hidden sm:flex gap-3 overflow-x-auto pb-4 snap-x">
