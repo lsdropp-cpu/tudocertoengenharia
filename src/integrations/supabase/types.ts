@@ -20,6 +20,7 @@ export type Database = {
           created_at: string
           email: string
           id: string
+          mensagem: string | null
           nome: string
           status: string
           telefone: string
@@ -29,6 +30,7 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
+          mensagem?: string | null
           nome: string
           status?: string
           telefone: string
@@ -38,6 +40,7 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+          mensagem?: string | null
           nome?: string
           status?: string
           telefone?: string
