@@ -21,6 +21,8 @@ import {
   Clock,
   GripVertical,
   ExternalLink,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 interface Lead {
