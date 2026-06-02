@@ -212,7 +212,7 @@ const Orcamento = () => {
                   <span className="block mt-2">Se preferir, fale diretamente com nosso especialista agora:</span>
                 </p>
                 <a
-                  href="https://wa.me/5551989192443?text=Ol%C3%A1%2C%20gostaria%20de%20um%20or%C3%A7amento%20em%20Steel%20Frame"
+                  href="https://wa.me/555195648802?text=Oi,%20vim%20pelo%20formul%C3%A1rio%20do%20site."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors px-6 py-3 font-medium"
