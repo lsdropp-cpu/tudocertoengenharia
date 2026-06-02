@@ -237,10 +237,10 @@ const Orcamento = () => {
                 <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
                   {[
                     { name: "nome", label: "Nome completo", type: "text", placeholder: "Seu nome" },
-                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "(00) 00000-0000" },
-                    { name: "email", label: "E-mail", type: "email", placeholder: "seu@email.com" },
+                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "51989192443", inputMode: "numeric", pattern: "[0-9]{10,11}", maxLength: 11 },
+                    { name: "email", label: "E-mail", type: "email", placeholder: "nome@dominio.com" },
                     { name: "cidade", label: "Cidade", type: "text", placeholder: "Sua cidade" },
-                  ].map((f) => (
+                  ].map((f: any) => (
                     <div key={f.name}>
                       <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{f.label}</label>
                       <input
@@ -250,10 +250,27 @@ const Orcamento = () => {
                         value={(form as any)[f.name]}
                         onChange={handleChange}
                         placeholder={f.placeholder}
+                        inputMode={f.inputMode}
+                        pattern={f.pattern}
+                        maxLength={f.maxLength}
                         className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
                       />
                     </div>
                   ))}
+                  <div>
+                    <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">
+                      Conte-nos um pouco sobre o seu projeto
+                    </label>
+                    <textarea
+                      name="mensagem"
+                      value={form.mensagem}
+                      onChange={handleChange}
+                      placeholder="Ex: casa de 120m², 3 quartos, terreno em Porto Alegre..."
+                      rows={4}
+                      maxLength={2000}
+                      className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors resize-y"
+                    />
+                  </div>
                   <Button type="submit" variant="hero" size="xl" className="w-full px-3 text-sm sm:text-lg tracking-wide whitespace-normal leading-tight" disabled={loading}>
                     {loading ? "Enviando..." : (<>Quero meu orçamento <Send className="ml-2 w-5 h-5" /></>)}
                   </Button>
