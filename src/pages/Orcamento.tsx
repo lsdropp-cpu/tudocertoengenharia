@@ -115,12 +115,18 @@ const BenefitHighlights = ({ className = "" }: { className?: string }) => (
 );
 
 const Orcamento = () => {
-  const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "" });
+  const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name === "telefone") {
+      setForm({ ...form, telefone: value.replace(/\D/g, "").slice(0, 11) });
+      return;
+    }
+    setForm({ ...form, [name]: value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
