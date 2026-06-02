@@ -128,18 +128,18 @@ const Orcamento = () => {
       </header>
 
       {/* Hero + Form */}
-      <section className="container mx-auto px-4 py-10 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+      <section className="container mx-auto px-4 py-8 lg:py-16">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           <div className="animate-fade-in">
-            <span className="inline-block text-primary font-semibold uppercase tracking-wider text-sm mb-4">
+            <span className="inline-block text-primary font-semibold uppercase tracking-wider text-xs sm:text-sm mb-3">
               Construa em Steel Frame
             </span>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
+            <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-4 sm:mb-6">
               SEU PROJETO PRONTO
               <br />
               <span className="text-primary">EM ATÉ 3X MENOS TEMPO</span>
             </h1>
-            <p className="text-secondary-foreground/70 text-lg mb-8 max-w-lg">
+            <p className="text-secondary-foreground/70 text-base sm:text-lg mb-6 sm:mb-8 max-w-lg">
               Solicite um orçamento sem compromisso e descubra como o Steel Frame
               pode transformar sua obra com mais qualidade, menos prazo e custo previsível.
             </p>
