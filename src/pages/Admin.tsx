@@ -4,6 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   LogOut,
   Mail,
   Phone,
@@ -13,6 +20,7 @@ import {
   MessageSquare,
   Clock,
   GripVertical,
+  ExternalLink,
 } from "lucide-react";
 
 interface Lead {
@@ -56,6 +64,11 @@ const Admin = () => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
   const [dragOver, setDragOver] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selectedLead = useMemo(
+    () => leads.find((l) => l.id === selectedId) || null,
+    [leads, selectedId],
+  );
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -246,11 +259,15 @@ const Admin = () => {
                             e.dataTransfer.setData("text/plain", lead.id);
                             e.dataTransfer.effectAllowed = "move";
                           }}
-                          className="group bg-background border border-border rounded-lg p-3 cursor-grab active:cursor-grabbing hover:border-primary/40 transition-colors"
+                          onClick={() => setSelectedId(lead.id)}
+                          className="group bg-background border border-border rounded-lg p-3 cursor-pointer hover:border-primary/40 hover:shadow-md transition-all"
                         >
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <h3 className="font-semibold leading-tight">{lead.nome}</h3>
-                            <GripVertical className="w-4 h-4 text-muted-foreground/40 shrink-0 mt-0.5" />
+                            <GripVertical
+                              className="w-4 h-4 text-muted-foreground/40 shrink-0 mt-0.5 cursor-grab active:cursor-grabbing"
+                              onClick={(e) => e.stopPropagation()}
+                            />
                           </div>
 
                           <div className="space-y-1 text-xs text-muted-foreground">
@@ -258,6 +275,7 @@ const Admin = () => {
                               href={`https://wa.me/55${lead.telefone.replace(/\D/g, "")}`}
                               target="_blank"
                               rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                               className="flex items-center gap-1.5 hover:text-primary break-all"
                             >
                               <Phone className="w-3.5 h-3.5 shrink-0" />
@@ -265,6 +283,7 @@ const Admin = () => {
                             </a>
                             <a
                               href={`mailto:${lead.email}`}
+                              onClick={(e) => e.stopPropagation()}
                               className="flex items-center gap-1.5 hover:text-primary break-all"
                             >
                               <Mail className="w-3.5 h-3.5 shrink-0" /> {lead.email}
@@ -277,7 +296,7 @@ const Admin = () => {
                           {lead.mensagem ? (
                             <div className="mt-2 pt-2 border-t border-border/60 text-xs text-foreground/80 flex gap-1.5">
                               <MessageSquare className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground" />
-                              <p className="leading-snug whitespace-pre-wrap break-words line-clamp-4">
+                              <p className="leading-snug whitespace-pre-wrap break-words line-clamp-3">
                                 {lead.mensagem}
                               </p>
                             </div>
@@ -288,10 +307,11 @@ const Admin = () => {
                               <Clock className="w-3 h-3" />
                               {new Date(lead.created_at).toLocaleDateString("pt-BR")}
                             </span>
-                            <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                               <select
                                 value={normalizeStage(lead.estagio || lead.status)}
                                 onChange={(e) => moveLead(lead.id, e.target.value)}
+                                onClick={(e) => e.stopPropagation()}
                                 className="text-[11px] px-1.5 py-1 rounded bg-background border border-input"
                               >
                                 {STAGES.map((s) => (
@@ -301,7 +321,10 @@ const Admin = () => {
                                 ))}
                               </select>
                               <button
-                                onClick={() => handleDelete(lead.id)}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDelete(lead.id);
+                                }}
                                 aria-label="Excluir"
                                 className="p-1 rounded hover:bg-destructive/10 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
                               >
@@ -319,6 +342,109 @@ const Admin = () => {
           </div>
         )}
       </main>
+
+      <Dialog open={!!selectedLead} onOpenChange={(o) => !o && setSelectedId(null)}>
+        <DialogContent className="max-w-lg">
+          {selectedLead && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-display">{selectedLead.nome}</DialogTitle>
+                <DialogDescription>
+                  Lead recebido em{" "}
+                  {new Date(selectedLead.created_at).toLocaleString("pt-BR")}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-4 mt-2">
+                <div className="flex flex-wrap gap-2">
+                  {STAGES.map((s) => {
+                    const active = normalizeStage(selectedLead.estagio || selectedLead.status) === s.id;
+                    return (
+                      <button
+                        key={s.id}
+                        onClick={() => moveLead(selectedLead.id, s.id)}
+                        className={`text-xs px-2.5 py-1 rounded-md border transition-colors ${
+                          active ? s.accent : "border-border text-muted-foreground hover:border-primary/40"
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <a
+                    href={`https://wa.me/55${selectedLead.telefone.replace(/\D/g, "")}?text=${encodeURIComponent(
+                      `Olá ${selectedLead.nome.split(" ")[0]}, falo da Tudo Certo Engenharia sobre o seu pedido de orçamento.`,
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors text-sm"
+                  >
+                    <Phone className="w-4 h-4 text-primary" />
+                    <div className="min-w-0">
+                      <div className="text-xs text-muted-foreground">WhatsApp</div>
+                      <div className="font-medium truncate">{formatPhone(selectedLead.telefone)}</div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground ml-auto" />
+                  </a>
+                  <a
+                    href={`mailto:${selectedLead.email}`}
+                    className="flex items-center gap-2 p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors text-sm"
+                  >
+                    <Mail className="w-4 h-4 text-primary" />
+                    <div className="min-w-0">
+                      <div className="text-xs text-muted-foreground">E-mail</div>
+                      <div className="font-medium truncate">{selectedLead.email}</div>
+                    </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-muted-foreground ml-auto" />
+                  </a>
+                  <div className="flex items-center gap-2 p-3 rounded-lg border border-border text-sm sm:col-span-2">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    <div>
+                      <div className="text-xs text-muted-foreground">Cidade</div>
+                      <div className="font-medium">{selectedLead.cidade}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-border p-4 bg-muted/30">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                    <MessageSquare className="w-3.5 h-3.5" /> Sobre o projeto
+                  </div>
+                  {selectedLead.mensagem ? (
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                      {selectedLead.mensagem}
+                    </p>
+                  ) : (
+                    <p className="text-sm italic text-muted-foreground">
+                      O lead não escreveu nenhuma descrição.
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex justify-between gap-2 pt-2 border-t border-border">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      handleDelete(selectedLead.id);
+                      setSelectedId(null);
+                    }}
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" /> Excluir lead
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => setSelectedId(null)}>
+                    Fechar
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
