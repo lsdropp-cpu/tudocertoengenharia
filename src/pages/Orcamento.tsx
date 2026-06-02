@@ -3,7 +3,29 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle2, Hammer, Clock, Leaf, ShieldCheck, Send } from "lucide-react";
+import {
+  CheckCircle2,
+  Hammer,
+  Clock,
+  Leaf,
+  ShieldCheck,
+  Send,
+  Zap,
+  Ruler,
+  TrendingUp,
+  Home,
+  Building2,
+  Wrench,
+  ArrowRight,
+  Phone,
+  Mail,
+  MapPin,
+} from "lucide-react";
+import logo from "@/assets/logo.png";
+import projetoCasa from "@/assets/projeto-casa.png";
+import projetoResidencial from "@/assets/projeto-residencial.png";
+import projetoComercial from "@/assets/projeto-comercial.png";
+import projetoObra from "@/assets/projeto-obra.png";
 
 const leadSchema = z.object({
   nome: z.string().trim().min(2, "Informe seu nome").max(200),
@@ -17,6 +39,36 @@ const beneficios = [
   { icon: Leaf, title: "Sustentável e limpo", desc: "Menos resíduos, mais eficiência." },
   { icon: ShieldCheck, title: "Estrutura certificada", desc: "Aço galvanizado de alta durabilidade." },
   { icon: Hammer, title: "Projeto sob medida", desc: "Do residencial ao comercial." },
+];
+
+const tipos = [
+  {
+    icon: Home,
+    title: "Residencial",
+    desc: "Casas, sobrados e edícolas com conforto térmico e acústico.",
+    image: projetoCasa,
+  },
+  {
+    icon: Building2,
+    title: "Comercial",
+    desc: "Lojas, escritórios e galpões com obra rápida e padronizada.",
+    image: projetoComercial,
+  },
+  {
+    icon: Wrench,
+    title: "Reforma e ampliação",
+    desc: "Ampliações e segundo pavimento sem sobrecarregar a estrutura.",
+    image: projetoObra,
+  },
+];
+
+const vantagens = [
+  { icon: Clock, title: "Construção rápida", desc: "Até 30% mais rápida que a alvenaria tradicional." },
+  { icon: Leaf, title: "Sustentável", desc: "Menos resíduos e maior eficiência energética." },
+  { icon: ShieldCheck, title: "Alta durabilidade", desc: "Resistente a pragas, umidade e intempéries." },
+  { icon: Zap, title: "Leve e resistente", desc: "Até 6x mais leve que o concreto." },
+  { icon: Ruler, title: "Precisão milimétrica", desc: "Encaixes perfeitos com fabricação industrial." },
+  { icon: TrendingUp, title: "Melhor custo-benefício", desc: "Economia em fundação, mão de obra e prazo." },
 ];
 
 const Orcamento = () => {
@@ -41,7 +93,12 @@ const Orcamento = () => {
 
     setLoading(true);
     const { nome, telefone, email, cidade } = parsed.data;
-    const { error } = await supabase.from("leads").insert({ nome: nome!, telefone: telefone!, email: email!, cidade: cidade! });
+    const { error } = await supabase.from("leads").insert({
+      nome: nome as string,
+      telefone: telefone as string,
+      email: email as string,
+      cidade: cidade as string,
+    });
     setLoading(false);
 
     if (error) {
@@ -54,20 +111,27 @@ const Orcamento = () => {
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
   };
 
+  const scrollToForm = () => {
+    document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-hero-gradient text-secondary-foreground">
-      <header className="container mx-auto px-4 py-6 flex items-center justify-between">
-        <a href="/" className="font-display text-2xl tracking-wider">
-          TUDO <span className="text-primary">CERTO</span>
-        </a>
-        <a href="/" className="text-sm text-secondary-foreground/70 hover:text-primary transition-colors">
-          ← Voltar ao site
-        </a>
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-[#3d3d3d]/95 backdrop-blur border-b border-secondary-foreground/10">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3">
+            <img src={logo} alt="Tudo Certo Engenharia" className="h-9 w-auto" />
+          </a>
+          <Button variant="hero" size="sm" onClick={scrollToForm}>
+            Solicitar orçamento
+          </Button>
+        </div>
       </header>
 
-      <main className="container mx-auto px-4 py-10 lg:py-16">
+      {/* Hero + Form */}
+      <section className="container mx-auto px-4 py-10 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Pitch */}
           <div className="animate-fade-in">
             <span className="inline-block text-primary font-semibold uppercase tracking-wider text-sm mb-4">
               Construa em Steel Frame
@@ -113,10 +177,9 @@ const Orcamento = () => {
             </ul>
           </div>
 
-          {/* Form */}
           <div
             id="formulario"
-            className="bg-dark-card rounded-2xl p-8 md:p-10 border border-secondary-foreground/10 shadow-glow animate-scale-in"
+            className="bg-dark-card rounded-2xl p-8 md:p-10 border border-secondary-foreground/10 shadow-glow animate-scale-in lg:sticky lg:top-24"
           >
             {sent ? (
               <div className="text-center py-10">
@@ -168,10 +231,151 @@ const Orcamento = () => {
             )}
           </div>
         </div>
-      </main>
+      </section>
 
-      <footer className="container mx-auto px-4 py-8 text-center text-sm text-secondary-foreground/40">
-        © {new Date().getFullYear()} Tudo Certo Engenharia · Steel Frame
+      {/* Tipos de projeto */}
+      <section className="py-16 lg:py-24 bg-dark-bg">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-primary font-semibold uppercase tracking-wider text-sm">
+              O que construímos
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl mt-3">
+              Aqui temos tudo para o <span className="text-primary">seu projeto</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {tipos.map((t, i) => (
+              <div
+                key={i}
+                className="group rounded-2xl overflow-hidden bg-dark-card border border-secondary-foreground/10 hover:border-primary/40 transition-all"
+              >
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={t.image}
+                    alt={t.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-green-gradient flex items-center justify-center">
+                      <t.icon className="w-5 h-5 text-primary-foreground" />
+                    </div>
+                    <h3 className="font-display text-2xl">{t.title}</h3>
+                  </div>
+                  <p className="text-secondary-foreground/60">{t.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Vantagens */}
+      <section className="py-16 lg:py-24 bg-hero-gradient">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-primary font-semibold uppercase tracking-wider text-sm">
+              Vantagens
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl mt-3">
+              Por que escolher <span className="text-primary">Steel Frame?</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vantagens.map((v, i) => (
+              <div
+                key={i}
+                className="p-6 rounded-2xl bg-dark-card/60 border border-secondary-foreground/10 hover:border-primary/30 transition-all"
+              >
+                <div className="w-12 h-12 rounded-xl bg-green-gradient flex items-center justify-center mb-4">
+                  <v.icon className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <h3 className="font-display text-xl mb-2">{v.title}</h3>
+                <p className="text-secondary-foreground/60 text-sm">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Projetos realizados */}
+      <section className="py-16 lg:py-24 bg-dark-bg">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-primary font-semibold uppercase tracking-wider text-sm">
+              Portfólio
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl mt-3">
+              Alguns dos nossos <span className="text-primary">projetos</span>
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[projetoCasa, projetoResidencial, projetoComercial, projetoObra].map((img, i) => (
+              <div
+                key={i}
+                className="aspect-square rounded-xl overflow-hidden border border-secondary-foreground/10"
+              >
+                <img
+                  src={img}
+                  alt={`Projeto ${i + 1}`}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-16 lg:py-20 bg-green-gradient text-primary-foreground">
+        <div className="container mx-auto px-4 text-center max-w-2xl">
+          <h2 className="font-display text-3xl md:text-5xl mb-4">
+            Pronto para começar seu projeto?
+          </h2>
+          <p className="text-primary-foreground/90 text-lg mb-8">
+            Fale com nossa equipe e receba um orçamento personalizado sem compromisso.
+          </p>
+          <Button
+            variant="secondary"
+            size="xl"
+            onClick={scrollToForm}
+            className="bg-dark-bg text-secondary-foreground hover:bg-dark-card"
+          >
+            Solicitar orçamento agora <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#1a1a1a] border-t border-secondary-foreground/10 py-10">
+        <div className="container mx-auto px-4 grid md:grid-cols-3 gap-8 text-sm text-secondary-foreground/70">
+          <div>
+            <img src={logo} alt="Tudo Certo Engenharia" className="h-10 w-auto mb-3" />
+            <p>Steel Frame com qualidade, prazo e custo previsível.</p>
+          </div>
+          <div className="space-y-2">
+            <a href="tel:+5551989192443" className="flex items-center gap-2 hover:text-primary">
+              <Phone className="w-4 h-4" /> (51) 98919-2443
+            </a>
+            <a href="mailto:comercial@tudocertoeng.com.br" className="flex items-center gap-2 hover:text-primary">
+              <Mail className="w-4 h-4" /> comercial@tudocertoeng.com.br
+            </a>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" /> Porto Alegre, RS
+            </div>
+          </div>
+          <div className="md:text-right">
+            <a href="/" className="hover:text-primary">← Voltar ao site principal</a>
+            <p className="mt-4 text-secondary-foreground/40">
+              © {new Date().getFullYear()} Tudo Certo Engenharia
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   );
