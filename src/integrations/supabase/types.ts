@@ -19,6 +19,7 @@ export type Database = {
           cidade: string
           created_at: string
           email: string
+          estagio: string
           id: string
           mensagem: string | null
           nome: string
@@ -29,6 +30,7 @@ export type Database = {
           cidade: string
           created_at?: string
           email: string
+          estagio?: string
           id?: string
           mensagem?: string | null
           nome: string
@@ -39,6 +41,7 @@ export type Database = {
           cidade?: string
           created_at?: string
           email?: string
+          estagio?: string
           id?: string
           mensagem?: string | null
           nome?: string
