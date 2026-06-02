@@ -81,14 +81,24 @@ const Auth = () => {
           </div>
           <div>
             <label className="block text-sm text-secondary-foreground/70 mb-2">Senha</label>
-            <input
-              type="password"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 focus:border-primary focus:outline-none transition-colors"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-12 rounded-lg bg-dark-bg border border-secondary-foreground/10 focus:border-primary focus:outline-none transition-colors"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-foreground/60 hover:text-primary transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
           <Button type="submit" variant="hero" size="xl" className="w-full" disabled={loading}>
             {loading ? "Carregando..." : mode === "login" ? "Entrar" : "Criar conta"}
