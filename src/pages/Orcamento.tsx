@@ -234,13 +234,13 @@ const Orcamento = () => {
       <Comparativo />
 
       {/* Tipos de projeto */}
-      <section className="py-16 lg:py-24 bg-dark-bg">
+      <section className="py-12 lg:py-24 bg-dark-bg">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-primary font-semibold uppercase tracking-wider text-sm">
               O que construímos
             </span>
-            <h2 className="font-display text-3xl md:text-5xl mt-3">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mt-3">
               Aqui temos tudo para o <span className="text-primary">seu projeto</span>
             </h2>
           </div>
@@ -274,13 +274,13 @@ const Orcamento = () => {
       </section>
 
       {/* Vantagens */}
-      <section className="py-16 lg:py-24 bg-hero-gradient">
+      <section className="py-12 lg:py-24 bg-hero-gradient">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-primary font-semibold uppercase tracking-wider text-sm">
               Vantagens
             </span>
-            <h2 className="font-display text-3xl md:text-5xl mt-3">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mt-3">
               Por que escolher <span className="text-primary">Steel Frame?</span>
             </h2>
           </div>
@@ -303,13 +303,13 @@ const Orcamento = () => {
       </section>
 
       {/* Projetos realizados */}
-      <section className="py-16 lg:py-24 bg-dark-bg">
+      <section className="py-12 lg:py-24 bg-dark-bg">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-primary font-semibold uppercase tracking-wider text-sm">
               Portfólio
             </span>
-            <h2 className="font-display text-3xl md:text-5xl mt-3">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mt-3">
               Alguns dos nossos <span className="text-primary">projetos</span>
             </h2>
           </div>
@@ -334,7 +334,7 @@ const Orcamento = () => {
       {/* Final CTA */}
       <section className="py-16 lg:py-20 bg-green-gradient text-primary-foreground">
         <div className="container mx-auto px-4 text-center max-w-2xl">
-          <h2 className="font-display text-3xl md:text-5xl mb-4">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mb-4">
             Pronto para começar seu projeto?
           </h2>
           <p className="text-primary-foreground/90 text-lg mb-8">

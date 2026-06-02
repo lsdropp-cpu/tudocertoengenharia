@@ -30,14 +30,14 @@ const Comparativo = () => {
   }, []);
 
   return (
-    <section ref={ref} className="py-16 lg:py-24 bg-hero-gradient">
+    <section ref={ref} className="py-12 lg:py-24 bg-hero-gradient">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16 items-start">
           <div>
             <span className="text-primary font-semibold uppercase tracking-wider text-sm">
               Comparativo
             </span>
-            <h2 className="font-display text-3xl md:text-5xl mt-3 mb-5">
+            <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mt-3 mb-5">
               <span className="text-white">Vantagens do</span> <span className="text-primary">Steel Frame</span>
             </h2>
             <p className="text-secondary-foreground/70 leading-relaxed">
