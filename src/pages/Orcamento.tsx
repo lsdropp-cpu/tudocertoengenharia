@@ -194,11 +194,11 @@ const Orcamento = () => {
               </div>
             ) : (
               <>
-                <h2 className="font-display text-2xl sm:text-3xl mb-2">Quero meu orçamento</h2>
-                <p className="text-secondary-foreground/60 mb-6 text-sm">
+                <h2 className="font-display text-2xl sm:text-3xl mb-2 leading-none">Quero meu orçamento</h2>
+                <p className="text-secondary-foreground/60 mb-5 sm:mb-6 text-sm">
                   Preencha e fale com um especialista.
                 </p>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
                   {[
                     { name: "nome", label: "Nome completo", type: "text", placeholder: "Seu nome" },
                     { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "(00) 00000-0000" },
@@ -206,7 +206,7 @@ const Orcamento = () => {
                     { name: "cidade", label: "Cidade", type: "text", placeholder: "Sua cidade" },
                   ].map((f) => (
                     <div key={f.name}>
-                      <label className="block text-sm text-secondary-foreground/70 mb-2">{f.label}</label>
+                      <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{f.label}</label>
                       <input
                         name={f.name}
                         type={f.type}
@@ -214,11 +214,11 @@ const Orcamento = () => {
                         value={(form as any)[f.name]}
                         onChange={handleChange}
                         placeholder={f.placeholder}
-                        className="w-full px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
+                        className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
                       />
                     </div>
                   ))}
-                  <Button type="submit" variant="hero" size="xl" className="w-full" disabled={loading}>
+                  <Button type="submit" variant="hero" size="xl" className="w-full px-3 text-sm sm:text-lg tracking-wide whitespace-normal leading-tight" disabled={loading}>
                     {loading ? "Enviando..." : (<>Quero meu orçamento <Send className="ml-2 w-5 h-5" /></>)}
                   </Button>
                   <p className="text-xs text-secondary-foreground/50 text-center">
