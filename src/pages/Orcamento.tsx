@@ -72,6 +72,40 @@ const vantagens = [
   { icon: TrendingUp, title: "Melhor custo-benefício", desc: "Economia em fundação, mão de obra e prazo." },
 ];
 
+const BenefitHighlights = ({ className = "" }: { className?: string }) => (
+  <div className={className}>
+    <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 mb-5 sm:mb-8">
+      {beneficios.map((b, i) => (
+        <div
+          key={i}
+          className="flex min-w-0 gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl bg-dark-card/60 border border-secondary-foreground/10"
+        >
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+            <b.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+          </div>
+          <div className="min-w-0">
+            <div className="font-semibold text-sm sm:text-base leading-snug">{b.title}</div>
+            <div className="text-xs sm:text-sm text-secondary-foreground/60 leading-snug">{b.desc}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <ul className="space-y-2 text-sm sm:text-base text-secondary-foreground/80">
+      {[
+        "Atendimento personalizado em Porto Alegre e região",
+        "Orçamento gratuito e sem compromisso",
+        "Equipe especializada em Steel Frame",
+      ].map((item, i) => (
+        <li key={i} className="flex min-w-0 items-start gap-2">
+          <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+          <span className="min-w-0 leading-relaxed">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
+
 const Orcamento = () => {
   const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "" });
   const [loading, setLoading] = useState(false);
