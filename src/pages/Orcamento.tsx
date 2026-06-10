@@ -156,6 +156,44 @@ const Orcamento = () => {
       return;
     }
 
+    // ====== Meta Ads tracking (Pixel + Conversions API com dedup) ======
+    try {
+      const eventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+
+      // 1) Browser: Meta Pixel
+      if (typeof (window as any).fbq === "function") {
+        (window as any).fbq("track", "Lead", {
+          content_name: "Solicitação de Orçamento",
+          content_category: "Steel Frame",
+          currency: "BRL",
+          value: 1,
+        }, { eventID: eventId });
+      }
+
+      // 2) Servidor: Conversions API (mesmo eventId → dedup)
+      const getCookie = (name: string) => {
+        const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+        return m ? decodeURIComponent(m[1]) : undefined;
+      };
+
+      supabase.functions.invoke("meta-capi", {
+        body: {
+          event_id: eventId,
+          email,
+          phone: telefone,
+          nome,
+          cidade,
+          event_source_url: window.location.href,
+          fbp: getCookie("_fbp"),
+          fbc: getCookie("_fbc"),
+          user_agent: navigator.userAgent,
+        },
+      }).catch((e) => console.warn("meta-capi falhou:", e));
+    } catch (e) {
+      console.warn("Tracking Meta falhou:", e);
+    }
+    // ====================================================================
+
     setSent(true);
     setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
