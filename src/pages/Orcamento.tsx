@@ -22,10 +22,10 @@ import {
   MapPin,
 } from "lucide-react";
 import logo from "@/assets/logo.png";
-import projetoCasa from "@/assets/projeto-casa.png";
-import projetoResidencial from "@/assets/projeto-residencial.png";
-import projetoComercial from "@/assets/projeto-comercial.png";
-import projetoObra from "@/assets/projeto-obra.png";
+import projetoCasa from "@/assets/projeto-casa.webp";
+import projetoResidencial from "@/assets/projeto-residencial.webp";
+import projetoComercial from "@/assets/projeto-comercial.webp";
+import projetoObra from "@/assets/projeto-obra.webp";
 import Comparativo from "@/components/Comparativo";
 
 const leadSchema = z.object({

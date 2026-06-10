@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import projetoArena from "@/assets/projeto-arena.png";
-import projetoEstrutura from "@/assets/projeto-estrutura.png";
-import projetoComercial from "@/assets/projeto-comercial.png";
-import projetoCasa from "@/assets/projeto-casa.png";
-import projetoObra from "@/assets/projeto-obra.png";
-import projetoResidencial from "@/assets/projeto-residencial.png";
+import projetoArena from "@/assets/projeto-arena.webp";
+import projetoEstrutura from "@/assets/projeto-estrutura.webp";
+import projetoComercial from "@/assets/projeto-comercial.webp";
+import projetoCasa from "@/assets/projeto-casa.webp";
+import projetoObra from "@/assets/projeto-obra.webp";
+import projetoResidencial from "@/assets/projeto-residencial.webp";
 
 const projects = [
   {

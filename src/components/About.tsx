@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import projetoObra from "@/assets/projeto-obra.png";
+import projetoObra from "@/assets/projeto-obra.webp";
 
 const About = () => {
   const features = [
