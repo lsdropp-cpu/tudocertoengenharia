@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpeg";
+import heroBg from "@/assets/hero-bg.webp";
 
 const Hero = () => {
   return (
@@ -14,6 +14,9 @@ const Hero = () => {
           src={heroBg}
           alt="Casa construída com Steel Frame"
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-overlay-gradient" />
       </div>

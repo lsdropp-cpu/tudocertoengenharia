@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import projetoObra from "@/assets/projeto-obra.png";
+import projetoObra from "@/assets/projeto-obra.webp";
 
 const About = () => {
   const features = [
@@ -21,6 +21,8 @@ const About = () => {
               <img
                 src={projetoObra}
                 alt="Obra em Steel Frame"
+                loading="lazy"
+                decoding="async"
                 className="w-full aspect-[4/3] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/60 to-transparent" />
