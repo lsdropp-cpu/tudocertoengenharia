@@ -11,7 +11,7 @@ const Header = () => {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
+    { icon: Facebook, href: "https://www.facebook.com/people/Tudo-Certo-Solu%C3%A7%C3%B5es-em-Light-Steel-Frame/61590492280947/", label: "Facebook" },
     { icon: Instagram, href: "https://www.instagram.com/tudocerto.steel_frame/", label: "Instagram" },
   ];
 
