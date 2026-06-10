@@ -192,7 +192,21 @@ const Orcamento = () => {
     } catch (e) {
       console.warn("Tracking Meta falhou:", e);
     }
+
+    // ====== Google Ads — conversão "Envio de Orçamento" ======
+    try {
+      if (typeof (window as any).gtag === "function") {
+        (window as any).gtag("event", "conversion", {
+          send_to: "AW-18229608760/GPxtCNbV37wcELiCx_RD",
+          value: 1.0,
+          currency: "BRL",
+        });
+      }
+    } catch (e) {
+      console.warn("Tracking Google Ads falhou:", e);
+    }
     // ====================================================================
+
 
     setSent(true);
     setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
