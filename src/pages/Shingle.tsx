@@ -298,87 +298,96 @@ const Shingle = () => {
       </section>
 
       {/* ORCAMENTO / CTA */}
-      <section id="orcamento" className="py-20 bg-background">
+      <section id="orcamento" className="py-20 bg-dark-bg text-secondary-foreground">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div>
-              <span className="text-primary uppercase tracking-wider text-sm font-semibold">Orçamento</span>
-              <h2 className="font-display text-4xl md:text-5xl mt-2 mb-6">
-                Seu telhado completo com <span className="text-primary">sistema Shingle</span>
-              </h2>
-              <p className="text-muted-foreground mb-8">
-                Não orçamos somente o básico. Você recebe tudo o que precisa para
-                instalar com segurança e acabamento impecável.
-              </p>
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="font-display text-4xl md:text-5xl mb-5">
+              Seu telhado completo com <span className="text-primary">sistema Shingle</span>
+            </h2>
+            <p className="text-secondary-foreground/70 max-w-2xl mx-auto mb-12">
+              Não orçamos somente o básico. Você recebe tudo o que precisa para
+              instalar com segurança e acabamento impecável.
+            </p>
 
-              <ul className="space-y-4 mb-8">
-                {[
-                  "Cálculo do sistema completo (não apenas a telha)",
-                  "Manual de instalação + suporte técnico na obra",
-                  "Visual sofisticado com acabamento de alto padrão",
-                  "Até 30 anos de garantia de fábrica",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="inline-flex items-baseline gap-2 px-5 py-3 rounded-xl border border-primary/30 bg-primary/5">
-                <span className="text-sm text-muted-foreground">A partir de</span>
-                <span className="font-display text-3xl text-primary">R$ 145,00</span>
-                <span className="text-sm text-muted-foreground">/m²</span>
-              </div>
+            <div className="grid sm:grid-cols-2 gap-4 mb-10 text-left">
+              {[
+                "Cálculo do sistema completo (não apenas a telha)",
+                "Manual de instalação + suporte técnico na obra",
+                "Visual sofisticado com acabamento final de alto padrão",
+                "30 anos de garantia",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-start gap-3 p-5 rounded-xl bg-dark-card border border-secondary-foreground/10"
+                >
+                  <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                  <span className="text-secondary-foreground/90">{item}</span>
+                </div>
+              ))}
             </div>
 
-            <form
-              onSubmit={handleSubmit}
-              className="p-8 rounded-2xl bg-card border border-border shadow-lg"
-            >
-              <h3 className="font-display text-2xl mb-6">Solicite seu orçamento</h3>
-              <div className="space-y-4">
-                <Input
-                  placeholder="Seu nome *"
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                <Input
-                  placeholder="Telefone / WhatsApp *"
-                  required
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                />
-                <Input
-                  type="email"
-                  placeholder="E-mail (opcional)"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                />
-                <Textarea
-                  placeholder="Conte sobre seu projeto (área aproximada, localização...)"
-                  rows={4}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                />
-                <Button type="submit" variant="hero" size="lg" className="w-full" disabled={loading}>
-                  {loading ? "Enviando..." : "Solicitar Orçamento"}
-                  <ArrowRight className="ml-2" />
-                </Button>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors pt-2"
-                >
-                  <Phone className="w-4 h-4" /> Prefiro falar pelo WhatsApp
+            <div className="mb-8">
+              <span className="font-display text-3xl md:text-4xl text-primary">
+                A partir de R$ 145,00 m²
+              </span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button variant="hero" size="xl" onClick={() => setOpen(true)}>
+                Quero Meu Orçamento
+              </Button>
+              <Button variant="heroOutline" size="xl" asChild>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-2" /> Falar com especialista
                 </a>
-              </div>
-            </form>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* DIALOG FORM */}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl">Solicite seu orçamento</DialogTitle>
+            <DialogDescription>
+              Preencha seus dados e nossa equipe entrará em contato em breve.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+            <Input
+              placeholder="Seu nome *"
+              required
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+            <Input
+              placeholder="Telefone / WhatsApp *"
+              required
+              value={form.phone}
+              onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+            <Input
+              type="email"
+              placeholder="E-mail (opcional)"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
+            <Textarea
+              placeholder="Conte sobre seu projeto (área, localização...)"
+              rows={4}
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+            />
+            <Button type="submit" variant="hero" size="lg" className="w-full" disabled={loading}>
+              {loading ? "Enviando..." : "Solicitar Orçamento"}
+              <ArrowRight className="ml-2" />
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
 
       <Footer />
     </div>
