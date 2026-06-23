@@ -1,14 +1,20 @@
 import { Facebook, Instagram } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
-  const navLinks = [
-    { href: "#inicio", label: "Home" },
-    { href: "#sobre", label: "Sobre" },
-    { href: "#vantagens", label: "Vantagens" },
-    { href: "#projetos", label: "Projetos" },
-    { href: "#servicos", label: "Serviços" },
-    { href: "#contato", label: "Contato" },
-  ];
+  const { pathname } = useLocation();
+  const isShingle = pathname.startsWith("/shingle");
+
+  const navLinks = isShingle
+    ? []
+    : [
+        { href: "#inicio", label: "Home" },
+        { href: "#sobre", label: "Sobre" },
+        { href: "#vantagens", label: "Vantagens" },
+        { href: "#projetos", label: "Projetos" },
+        { href: "#servicos", label: "Serviços" },
+        { href: "#contato", label: "Contato" },
+      ];
 
   const socialLinks = [
     { icon: Facebook, href: "https://www.facebook.com/people/Tudo-Certo-Solu%C3%A7%C3%B5es-em-Light-Steel-Frame/61590492280947/", label: "Facebook" },
