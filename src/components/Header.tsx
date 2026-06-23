@@ -31,7 +31,7 @@ const Header = () => {
           aria-label="Tudo Certo"
           className="sm:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
         >
-          <img src={logo} alt="Tudo Certo" className="h-7 w-auto" />
+          <img src={logo} alt="Tudo Certo" className="h-11 w-auto" />
         </a>
         <div className="flex items-center h-12 gap-3">
           {/* Social Icons - Left (hidden on mobile to free space) */}
