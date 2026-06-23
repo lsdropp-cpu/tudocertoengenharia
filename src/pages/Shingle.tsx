@@ -104,6 +104,7 @@ const Shingle = () => {
 
       toast({ title: "Orçamento enviado!", description: "Em breve nossa equipe entrará em contato." });
       setForm({ name: "", phone: "", email: "", message: "" });
+      setOpen(false);
     } catch (err: any) {
       toast({ title: "Erro ao enviar", description: err.message, variant: "destructive" });
     } finally {
