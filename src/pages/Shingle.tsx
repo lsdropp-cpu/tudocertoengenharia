@@ -1,21 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   ArrowRight,
   ShieldCheck,
@@ -25,15 +15,12 @@ import {
   Award,
   Sparkles,
   CheckCircle2,
-  Phone,
   MessageCircle,
   Star,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShingleQuoteDialog from "@/components/ShingleQuoteDialog";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 import shingleHero from "@/assets/shingle-hero.jpg";
 import shingleDetail from "@/assets/shingle-detail.jpg";
 
