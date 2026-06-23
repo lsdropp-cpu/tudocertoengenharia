@@ -1,21 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   ArrowRight,
   ShieldCheck,
@@ -25,14 +15,12 @@ import {
   Award,
   Sparkles,
   CheckCircle2,
-  Phone,
   MessageCircle,
   Star,
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import ShingleQuoteDialog from "@/components/ShingleQuoteDialog";
 import shingleHero from "@/assets/shingle-hero.jpg";
 import shingleDetail from "@/assets/shingle-detail.jpg";
 
@@ -73,44 +61,8 @@ const testimonials = [
 ];
 
 const Shingle = () => {
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const { error } = await supabase.from("leads").insert({
-        nome: form.name,
-        telefone: form.phone,
-        email: form.email || "",
-        cidade: "",
-        mensagem: `[SHINGLE] ${form.message}`,
-      });
-      if (error) throw error;
-
-      try {
-        // @ts-ignore
-        if (typeof window !== "undefined" && (window as any).gtag) {
-          (window as any).gtag("event", "conversion", {
-            send_to: "AW-18229608760/GPxtCNbV37wcELiCx_RD",
-            value: 1.0,
-            currency: "BRL",
-          });
-        }
-      } catch {}
-
-      toast({ title: "Orçamento enviado!", description: "Em breve nossa equipe entrará em contato." });
-      setForm({ name: "", phone: "", email: "", message: "" });
-      setOpen(false);
-    } catch (err: any) {
-      toast({ title: "Erro ao enviar", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -143,15 +95,11 @@ const Shingle = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="hero" size="xl" asChild>
-              <a href="#orcamento">
-                Quero Meu Orçamento <ArrowRight className="ml-2" />
-              </a>
+            <Button variant="hero" size="xl" onClick={() => setOpen(true)}>
+              Quero Meu Orçamento <ArrowRight className="ml-2" />
             </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="mr-2" /> Falar com Especialista
-              </a>
+            <Button variant="heroOutline" size="xl" onClick={() => setOpen(true)}>
+              <MessageCircle className="mr-2" /> Falar com Especialista
             </Button>
           </div>
         </div>
@@ -345,57 +293,16 @@ const Shingle = () => {
               <Button variant="hero" size="xl" onClick={() => setOpen(true)}>
                 Quero Meu Orçamento
               </Button>
-              <Button variant="heroOutline" size="xl" asChild>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2" /> Falar com especialista
-                </a>
+              <Button variant="heroOutline" size="xl" onClick={() => setOpen(true)}>
+                <MessageCircle className="mr-2" /> Falar com especialista
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* DIALOG FORM */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl">Solicite seu orçamento</DialogTitle>
-            <DialogDescription>
-              Preencha seus dados e nossa equipe entrará em contato em breve.
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-            <Input
-              placeholder="Seu nome *"
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-            <Input
-              placeholder="Telefone / WhatsApp *"
-              required
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            />
-            <Input
-              type="email"
-              placeholder="E-mail (opcional)"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-            <Textarea
-              placeholder="Conte sobre seu projeto (área, localização...)"
-              rows={4}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-            />
-            <Button type="submit" variant="hero" size="lg" className="w-full" disabled={loading}>
-              {loading ? "Enviando..." : "Solicitar Orçamento"}
-              <ArrowRight className="ml-2" />
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <ShingleQuoteDialog open={open} onOpenChange={setOpen} />
+
 
 
       <Footer />
