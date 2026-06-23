@@ -23,6 +23,12 @@ import Footer from "@/components/Footer";
 import ShingleQuoteDialog from "@/components/ShingleQuoteDialog";
 import shingleHero from "@/assets/shingle-hero.jpg";
 import shingleDetail from "@/assets/shingle-detail.jpg";
+import obra1 from "@/assets/shingle-obra-1.png.asset.json";
+import obra2 from "@/assets/shingle-obra-2.png.asset.json";
+import obra3 from "@/assets/shingle-obra-3.png.asset.json";
+import obra4 from "@/assets/shingle-obra-4.png.asset.json";
+import obra5 from "@/assets/shingle-obra-5.png.asset.json";
+import obra6 from "@/assets/shingle-obra-6.png.asset.json";
 
 const WHATSAPP_URL =
   "https://wa.me/5500000000000?text=Olá!%20Tenho%20interesse%20em%20Telha%20Shingle.";
@@ -58,6 +64,45 @@ const testimonials = [
   { name: "Juliana Pereira", text: "Atendimento excelente do orçamento à entrega. Recomendo demais!", initials: "JP" },
   { name: "Ricardo Alves", text: "Investimento que realmente valorizou minha casa. Vale cada centavo.", initials: "RA" },
   { name: "Fernanda Lima", text: "Profissionais qualificados e produto de alta qualidade. 10/10.", initials: "FL" },
+];
+
+const galleryPhotos = [
+  {
+    src: obra1.url,
+    alt: "Residência com cobertura shingle em meio à natureza",
+    title: "Residência de alto padrão",
+    desc: "Cobertura escura com acabamento premium e integração com o paisagismo.",
+  },
+  {
+    src: obra2.url,
+    alt: "Casa contemporânea com telha shingle",
+    title: "Projeto contemporâneo",
+    desc: "Aplicação em arquitetura moderna com linhas limpas e volumetria marcante.",
+  },
+  {
+    src: obra3.url,
+    alt: "Capela com cobertura em telha shingle",
+    title: "Projeto especial",
+    desc: "Solução shingle aplicada em obra autoral com forte apelo visual.",
+  },
+  {
+    src: obra4.url,
+    alt: "Close do acabamento da telha shingle instalada",
+    title: "Acabamento de perto",
+    desc: "Textura, alinhamento e paginação que reforçam a percepção de qualidade.",
+  },
+  {
+    src: obra5.url,
+    alt: "Telhado shingle finalizado em residência",
+    title: "Obra finalizada",
+    desc: "Cobertura ampla com visual uniforme e excelente presença estética.",
+  },
+  {
+    src: obra6.url,
+    alt: "Estrutura de telhado em fase de preparação para instalação",
+    title: "Execução técnica",
+    desc: "Etapa de base estrutural mostrando o cuidado necessário para o sistema completo.",
+  },
 ];
 
 const Shingle = () => {
@@ -220,6 +265,44 @@ const Shingle = () => {
                   <span className="font-medium">{t.name}</span>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GALERIA DE OBRAS */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="text-primary uppercase tracking-wider text-sm font-semibold">Obras executadas</span>
+            <h2 className="font-display text-4xl md:text-5xl mt-2 mb-4">
+              Fotos reais de <span className="text-primary">obras com telha shingle</span>
+            </h2>
+            <p className="text-muted-foreground">
+              Mais prova social para você avaliar o acabamento, a estética e a aplicação
+              da telha shingle em projetos reais da Tudo Certo.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {galleryPhotos.map((photo) => (
+              <article
+                key={photo.src}
+                className="group overflow-hidden rounded-2xl border border-border bg-card shadow-lg"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    loading="lazy"
+                    className="w-full h-72 object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <div className="p-5">
+                  <h3 className="font-display text-2xl mb-2">{photo.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{photo.desc}</p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
