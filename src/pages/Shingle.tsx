@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ShingleQuoteDialog from "@/components/ShingleQuoteDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import shingleHero from "@/assets/shingle-hero.jpg";
@@ -143,15 +144,11 @@ const Shingle = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button variant="hero" size="xl" asChild>
-              <a href="#orcamento">
-                Quero Meu Orçamento <ArrowRight className="ml-2" />
-              </a>
+            <Button variant="hero" size="xl" onClick={() => setOpen(true)}>
+              Quero Meu Orçamento <ArrowRight className="ml-2" />
             </Button>
-            <Button variant="heroOutline" size="xl" asChild>
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="mr-2" /> Falar com Especialista
-              </a>
+            <Button variant="heroOutline" size="xl" onClick={() => setOpen(true)}>
+              <MessageCircle className="mr-2" /> Falar com Especialista
             </Button>
           </div>
         </div>
@@ -345,57 +342,16 @@ const Shingle = () => {
               <Button variant="hero" size="xl" onClick={() => setOpen(true)}>
                 Quero Meu Orçamento
               </Button>
-              <Button variant="heroOutline" size="xl" asChild>
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2" /> Falar com especialista
-                </a>
+              <Button variant="heroOutline" size="xl" onClick={() => setOpen(true)}>
+                <MessageCircle className="mr-2" /> Falar com especialista
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* DIALOG FORM */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="font-display text-2xl">Solicite seu orçamento</DialogTitle>
-            <DialogDescription>
-              Preencha seus dados e nossa equipe entrará em contato em breve.
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-            <Input
-              placeholder="Seu nome *"
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-            <Input
-              placeholder="Telefone / WhatsApp *"
-              required
-              value={form.phone}
-              onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            />
-            <Input
-              type="email"
-              placeholder="E-mail (opcional)"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-            <Textarea
-              placeholder="Conte sobre seu projeto (área, localização...)"
-              rows={4}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-            />
-            <Button type="submit" variant="hero" size="lg" className="w-full" disabled={loading}>
-              {loading ? "Enviando..." : "Solicitar Orçamento"}
-              <ArrowRight className="ml-2" />
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <ShingleQuoteDialog open={open} onOpenChange={setOpen} />
+
 
 
       <Footer />
