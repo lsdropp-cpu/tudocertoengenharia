@@ -75,10 +75,11 @@ const Shingle = () => {
     setLoading(true);
     try {
       const { error } = await supabase.from("leads").insert({
-        name: form.name,
-        phone: form.phone,
-        email: form.email || null,
-        message: `[SHINGLE] ${form.message}`,
+        nome: form.name,
+        telefone: form.phone,
+        email: form.email || "",
+        cidade: "",
+        mensagem: `[SHINGLE] ${form.message}`,
       });
       if (error) throw error;
 
