@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Orcamento from "./pages/Orcamento";
+import Shingle from "./pages/Shingle";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import Install from "./pages/Install";
@@ -21,6 +22,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/orcamento" element={<Orcamento />} />
+          <Route path="/shingle" element={<Shingle />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
