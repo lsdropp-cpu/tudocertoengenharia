@@ -24,7 +24,15 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#3d3d3d]">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 relative">
+        {/* Mobile centered logo */}
+        <a
+          href="/"
+          aria-label="Tudo Certo"
+          className="sm:hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+        >
+          <img src={logo} alt="Tudo Certo" className="h-7 w-auto" />
+        </a>
         <div className="flex items-center h-12 gap-3">
           {/* Social Icons - Left (hidden on mobile to free space) */}
           <div className="hidden sm:flex items-center gap-3 md:gap-4 shrink-0">
