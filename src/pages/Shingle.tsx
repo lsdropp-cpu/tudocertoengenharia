@@ -22,7 +22,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ShingleQuoteDialog from "@/components/ShingleQuoteDialog";
 import shingleHero from "@/assets/shingle-hero.jpg";
-import shingleDetail from "@/assets/shingle-detail.jpg";
+import shingleDetail from "@/assets/shingle-detail-roof.png.asset.json";
 import obra1 from "@/assets/shingle-obra-1.png.asset.json";
 import obra2 from "@/assets/shingle-obra-2.png.asset.json";
 import obra3 from "@/assets/shingle-obra-3.png.asset.json";
@@ -155,7 +155,7 @@ const Shingle = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <img src={shingleDetail} alt="Detalhe telha shingle" loading="lazy" className="rounded-2xl shadow-2xl w-full h-[480px] object-cover" />
+              <img src={shingleDetail.url} alt="Detalhe telha shingle" loading="lazy" className="rounded-2xl shadow-2xl w-full h-[480px] object-cover" />
               <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-xl hidden md:block">
                 <div className="font-display text-4xl">30</div>
                 <div className="text-sm uppercase tracking-wider">Anos de garantia</div>
