@@ -175,7 +175,7 @@ const Shingle = () => {
               <ul className="space-y-3">
                 {[
                   "Sistema completo, não apenas a telha",
-                  "Compatível com Steel Frame, madeira e laje",
+                  "Compatível com Steel Frame e madeira",
                   "Acabamento de alto padrão",
                   "Tecnologia internacionalmente reconhecida",
                 ].map((item) => (
