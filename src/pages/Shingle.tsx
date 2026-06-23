@@ -74,44 +74,8 @@ const testimonials = [
 ];
 
 const Shingle = () => {
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const { error } = await supabase.from("leads").insert({
-        nome: form.name,
-        telefone: form.phone,
-        email: form.email || "",
-        cidade: "",
-        mensagem: `[SHINGLE] ${form.message}`,
-      });
-      if (error) throw error;
-
-      try {
-        // @ts-ignore
-        if (typeof window !== "undefined" && (window as any).gtag) {
-          (window as any).gtag("event", "conversion", {
-            send_to: "AW-18229608760/GPxtCNbV37wcELiCx_RD",
-            value: 1.0,
-            currency: "BRL",
-          });
-        }
-      } catch {}
-
-      toast({ title: "Orçamento enviado!", description: "Em breve nossa equipe entrará em contato." });
-      setForm({ name: "", phone: "", email: "", message: "" });
-      setOpen(false);
-    } catch (err: any) {
-      toast({ title: "Erro ao enviar", description: err.message, variant: "destructive" });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
