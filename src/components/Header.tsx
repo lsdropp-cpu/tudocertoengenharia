@@ -1,5 +1,6 @@
 import { Facebook, Instagram } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const { pathname } = useLocation();
