@@ -23,7 +23,10 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
+  Bell,
+  BellOff,
 } from "lucide-react";
+import { pushSupported, subscribeToPush, unsubscribeFromPush, isSubscribed } from "@/lib/push";
 
 interface Lead {
   id: string;
@@ -266,6 +269,8 @@ const Admin = () => {
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [mobileStage, setMobileStage] = useState<string>("novo");
+  const [pushOn, setPushOn] = useState(false);
+  const [pushBusy, setPushBusy] = useState(false);
   const selectedLead = useMemo(
     () => leads.find((l) => l.id === selectedId) || null,
     [leads, selectedId],
@@ -315,13 +320,35 @@ const Admin = () => {
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
 
-  // Pede permissão de notificação ao virar admin
+  // Pede permissão de notificação ao virar admin + verifica status push
   useEffect(() => {
     if (!isAdmin) return;
     if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
     }
+    isSubscribed().then(setPushOn).catch(() => {});
   }, [isAdmin]);
+
+  const togglePush = async () => {
+    if (!userId) return;
+    setPushBusy(true);
+    try {
+      if (pushOn) {
+        await unsubscribeFromPush();
+        setPushOn(false);
+        toast({ title: "Notificações desativadas" });
+      } else {
+        await subscribeToPush(userId);
+        setPushOn(true);
+        toast({ title: "Notificações ativadas 🔔", description: "Você receberá push a cada lead novo." });
+      }
+    } catch (e: any) {
+      toast({ title: "Erro", description: e.message, variant: "destructive" });
+    } finally {
+      setPushBusy(false);
+    }
+  };
+
 
   // Realtime: dispara notificação ao chegar lead novo
   useEffect(() => {
@@ -447,6 +474,18 @@ const Admin = () => {
             <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
           </div>
           <div className="flex gap-2 shrink-0">
+            {pushSupported() && (
+              <Button
+                variant={pushOn ? "default" : "outline"}
+                size="sm"
+                onClick={togglePush}
+                disabled={pushBusy}
+                title={pushOn ? "Desativar push" : "Ativar push"}
+              >
+                {pushOn ? <Bell className="w-4 h-4 sm:mr-2" /> : <BellOff className="w-4 h-4 sm:mr-2" />}
+                <span className="hidden sm:inline">{pushOn ? "Push ativo" : "Ativar push"}</span>
+              </Button>
+            )}
             <Button variant="outline" size="sm" onClick={fetchLeads}>
               <RefreshCw className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Atualizar</span>
