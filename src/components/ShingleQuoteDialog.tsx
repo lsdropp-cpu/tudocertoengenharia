@@ -72,12 +72,44 @@ const ShingleQuoteDialog = ({ open, onOpenChange }: Props) => {
       const { error } = await supabase.from("leads").insert({
         nome: data.name,
         telefone: data.phone,
-        email: "",
-        cidade: "",
+        email: "nao-informado@shingle.local",
+        cidade: "Não informado",
         estagio: data.stage,
         mensagem,
       });
       if (error) throw error;
+
+      // Meta Ads (Pixel + Conversions API com dedup)
+      try {
+        const eventId = `lead_shingle_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+        if (typeof (window as any).fbq === "function") {
+          (window as any).fbq("track", "Lead", {
+            content_name: "Cotação Shingle",
+            content_category: "Telha Shingle",
+            currency: "BRL",
+            value: 1,
+          }, { eventID: eventId });
+        }
+        const getCookie = (name: string) => {
+          const m = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+          return m ? decodeURIComponent(m[1]) : undefined;
+        };
+        supabase.functions.invoke("meta-capi", {
+          body: {
+            event_id: eventId,
+            email: "",
+            phone: data.phone,
+            nome: data.name,
+            cidade: "",
+            event_source_url: window.location.href,
+            fbp: getCookie("_fbp"),
+            fbc: getCookie("_fbc"),
+            user_agent: navigator.userAgent,
+          },
+        }).catch((e) => console.warn("meta-capi falhou:", e));
+      } catch (e) {
+        console.warn("Tracking Meta falhou:", e);
+      }
 
       try {
         // @ts-ignore
