@@ -474,6 +474,18 @@ const Admin = () => {
             <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
           </div>
           <div className="flex gap-2 shrink-0">
+            {pushSupported() && (
+              <Button
+                variant={pushOn ? "default" : "outline"}
+                size="sm"
+                onClick={togglePush}
+                disabled={pushBusy}
+                title={pushOn ? "Desativar push" : "Ativar push"}
+              >
+                {pushOn ? <Bell className="w-4 h-4 sm:mr-2" /> : <BellOff className="w-4 h-4 sm:mr-2" />}
+                <span className="hidden sm:inline">{pushOn ? "Push ativo" : "Ativar push"}</span>
+              </Button>
+            )}
             <Button variant="outline" size="sm" onClick={fetchLeads}>
               <RefreshCw className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">Atualizar</span>
