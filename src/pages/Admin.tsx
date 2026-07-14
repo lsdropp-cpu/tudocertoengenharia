@@ -320,13 +320,35 @@ const Admin = () => {
     return () => sub.subscription.unsubscribe();
   }, [navigate]);
 
-  // Pede permissão de notificação ao virar admin
+  // Pede permissão de notificação ao virar admin + verifica status push
   useEffect(() => {
     if (!isAdmin) return;
     if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
     }
+    isSubscribed().then(setPushOn).catch(() => {});
   }, [isAdmin]);
+
+  const togglePush = async () => {
+    if (!userId) return;
+    setPushBusy(true);
+    try {
+      if (pushOn) {
+        await unsubscribeFromPush();
+        setPushOn(false);
+        toast({ title: "Notificações desativadas" });
+      } else {
+        await subscribeToPush(userId);
+        setPushOn(true);
+        toast({ title: "Notificações ativadas 🔔", description: "Você receberá push a cada lead novo." });
+      }
+    } catch (e: any) {
+      toast({ title: "Erro", description: e.message, variant: "destructive" });
+    } finally {
+      setPushBusy(false);
+    }
+  };
+
 
   // Realtime: dispara notificação ao chegar lead novo
   useEffect(() => {
