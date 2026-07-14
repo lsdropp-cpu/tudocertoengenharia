@@ -23,7 +23,10 @@ import {
   ExternalLink,
   ChevronLeft,
   ChevronRight,
+  Bell,
+  BellOff,
 } from "lucide-react";
+import { pushSupported, subscribeToPush, unsubscribeFromPush, isSubscribed } from "@/lib/push";
 
 interface Lead {
   id: string;
