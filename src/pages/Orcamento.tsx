@@ -246,6 +246,9 @@ const Orcamento = () => {
 
     setSent(true);
     setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
+    setEstagio("");
+    setArea("");
+    setDecisao("");
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
   };
 
