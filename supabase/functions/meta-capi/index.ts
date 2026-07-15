@@ -125,8 +125,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log('Meta CAPI OK:', result);
-    return new Response(JSON.stringify({ success: true, result }), {
+    return new Response(JSON.stringify({ success: true, results }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
