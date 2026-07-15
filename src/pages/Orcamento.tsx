@@ -348,6 +348,41 @@ const Orcamento = () => {
                       />
                     </div>
                   ))}
+                  {[
+                    { label: "Em qual estágio está seu projeto?", value: estagio, set: setEstagio, options: ESTAGIO_OPTIONS },
+                    { label: "Qual a área aproximada da construção?", value: area, set: setArea, options: AREA_OPTIONS },
+                    { label: "Você já decidiu construir em Steel Frame?", value: decisao, set: setDecisao, options: DECISAO_OPTIONS },
+                  ].map((q) => (
+                    <div key={q.label}>
+                      <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{q.label}</label>
+                      <div className="grid gap-2">
+                        {q.options.map((opt) => {
+                          const selected = q.value === opt;
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => q.set(opt)}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg border text-left text-sm transition-all ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-secondary-foreground"
+                                  : "border-secondary-foreground/10 bg-dark-bg text-secondary-foreground/80 hover:border-primary/50"
+                              }`}
+                            >
+                              <span
+                                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                                  selected ? "border-primary" : "border-secondary-foreground/30"
+                                }`}
+                              >
+                                {selected && <span className="w-2 h-2 rounded-full bg-primary" />}
+                              </span>
+                              <span className="min-w-0 leading-snug">{opt}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
                   <div>
                     <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">
                       Conte-nos um pouco sobre o seu projeto
