@@ -1,7 +1,9 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
-const PIXEL_ID = '781663838269090';
-const ACCESS_TOKEN = Deno.env.get('META_PIXEL_ACCESS_TOKEN');
+const PIXELS: Array<{ id: string; token: string | undefined }> = [
+  { id: '781663838269090', token: Deno.env.get('META_PIXEL_ACCESS_TOKEN') },
+  { id: '1794243745264762', token: Deno.env.get('META_PIXEL_2_ACCESS_TOKEN') },
+];
 const API_VERSION = 'v19.0';
 
 // SHA-256 hash (Meta exige PII com hash)
@@ -25,9 +27,10 @@ Deno.serve(async (req) => {
   }
 
   try {
-    if (!ACCESS_TOKEN) {
+    const activePixels = PIXELS.filter((p) => !!p.token);
+    if (activePixels.length === 0) {
       return new Response(
-        JSON.stringify({ error: 'META_PIXEL_ACCESS_TOKEN não configurado' }),
+        JSON.stringify({ error: 'Nenhum META_PIXEL_ACCESS_TOKEN configurado' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
@@ -96,24 +99,33 @@ Deno.serve(async (req) => {
       ],
     };
 
-    const url = `https://graph.facebook.com/${API_VERSION}/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    const results = await Promise.all(
+      activePixels.map(async (p) => {
+        const url = `https://graph.facebook.com/${API_VERSION}/${p.id}/events?access_token=${p.token}`;
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) {
+          console.error(`Meta CAPI erro (pixel ${p.id}):`, resp.status, data);
+        } else {
+          console.log(`Meta CAPI OK (pixel ${p.id}):`, data);
+        }
+        return { pixel_id: p.id, ok: resp.ok, status: resp.status, data };
+      }),
+    );
 
-    const result = await resp.json();
-    if (!resp.ok) {
-      console.error('Meta CAPI erro:', resp.status, result);
+    const anyOk = results.some((r) => r.ok);
+    if (!anyOk) {
       return new Response(
-        JSON.stringify({ error: 'Meta API erro', status: resp.status, details: result }),
+        JSON.stringify({ error: 'Meta API erro em todos os pixels', results }),
         { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
 
-    console.log('Meta CAPI OK:', result);
-    return new Response(JSON.stringify({ success: true, result }), {
+    return new Response(JSON.stringify({ success: true, results }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
