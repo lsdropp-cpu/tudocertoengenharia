@@ -114,8 +114,32 @@ const BenefitHighlights = ({ className = "" }: { className?: string }) => (
   </div>
 );
 
+const ESTAGIO_OPTIONS = [
+  "Tenho projeto e/ou medidas",
+  "Projeto em andamento",
+  "Cotando fornecedores",
+  "Pesquisando / ideia inicial",
+];
+
+const AREA_OPTIONS = [
+  "Até 100 m²",
+  "101 a 150 m²",
+  "151 a 250 m²",
+  "Acima de 250 m²",
+];
+
+const DECISAO_OPTIONS = [
+  "✅ Sim, já decidi",
+  "🤔 Estou quase decidido",
+  "🏗️ Estou comparando com a alvenaria",
+  "📚 Ainda quero conhecer melhor o sistema",
+];
+
 const Orcamento = () => {
   const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
+  const [estagio, setEstagio] = useState("");
+  const [area, setArea] = useState("");
+  const [decisao, setDecisao] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -140,14 +164,26 @@ const Orcamento = () => {
       return;
     }
 
+    if (!estagio || !area || !decisao) {
+      toast({
+        title: "Complete a qualificação",
+        description: "Selecione o estágio, a área e a decisão sobre Steel Frame.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     const { nome, telefone, email, cidade, mensagem } = parsed.data;
+    const qualif = `Estágio: ${estagio}\nÁrea: ${area}\nDecisão Steel Frame: ${decisao}`;
+    const mensagemFinal = mensagem ? `${qualif}\n\n${mensagem}` : qualif;
     const { error } = await supabase.from("leads").insert({
       nome,
       telefone,
       email,
       cidade,
-      mensagem: mensagem || null,
+      estagio,
+      mensagem: mensagemFinal,
     });
     setLoading(false);
 
@@ -210,6 +246,9 @@ const Orcamento = () => {
 
     setSent(true);
     setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
+    setEstagio("");
+    setArea("");
+    setDecisao("");
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
   };
 
@@ -307,6 +346,41 @@ const Orcamento = () => {
                         maxLength={f.maxLength}
                         className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors"
                       />
+                    </div>
+                  ))}
+                  {[
+                    { label: "Em qual estágio está seu projeto?", value: estagio, set: setEstagio, options: ESTAGIO_OPTIONS },
+                    { label: "Qual a área aproximada da construção?", value: area, set: setArea, options: AREA_OPTIONS },
+                    { label: "Você já decidiu construir em Steel Frame?", value: decisao, set: setDecisao, options: DECISAO_OPTIONS },
+                  ].map((q) => (
+                    <div key={q.label}>
+                      <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{q.label}</label>
+                      <div className="grid gap-2">
+                        {q.options.map((opt) => {
+                          const selected = q.value === opt;
+                          return (
+                            <button
+                              key={opt}
+                              type="button"
+                              onClick={() => q.set(opt)}
+                              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg border text-left text-sm transition-all ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-secondary-foreground"
+                                  : "border-secondary-foreground/10 bg-dark-bg text-secondary-foreground/80 hover:border-primary/50"
+                              }`}
+                            >
+                              <span
+                                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                                  selected ? "border-primary" : "border-secondary-foreground/30"
+                                }`}
+                              >
+                                {selected && <span className="w-2 h-2 rounded-full bg-primary" />}
+                              </span>
+                              <span className="min-w-0 leading-snug">{opt}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   ))}
                   <div>
