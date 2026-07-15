@@ -164,14 +164,26 @@ const Orcamento = () => {
       return;
     }
 
+    if (!estagio || !area || !decisao) {
+      toast({
+        title: "Complete a qualificação",
+        description: "Selecione o estágio, a área e a decisão sobre Steel Frame.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     const { nome, telefone, email, cidade, mensagem } = parsed.data;
+    const qualif = `Estágio: ${estagio}\nÁrea: ${area}\nDecisão Steel Frame: ${decisao}`;
+    const mensagemFinal = mensagem ? `${qualif}\n\n${mensagem}` : qualif;
     const { error } = await supabase.from("leads").insert({
       nome,
       telefone,
       email,
       cidade,
-      mensagem: mensagem || null,
+      estagio,
+      mensagem: mensagemFinal,
     });
     setLoading(false);
 
