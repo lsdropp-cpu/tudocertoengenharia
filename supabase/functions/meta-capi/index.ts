@@ -99,18 +99,28 @@ Deno.serve(async (req) => {
       ],
     };
 
-    const url = `https://graph.facebook.com/${API_VERSION}/${PIXEL_ID}/events?access_token=${ACCESS_TOKEN}`;
-    const resp = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    const results = await Promise.all(
+      activePixels.map(async (p) => {
+        const url = `https://graph.facebook.com/${API_VERSION}/${p.id}/events?access_token=${p.token}`;
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json().catch(() => ({}));
+        if (!resp.ok) {
+          console.error(`Meta CAPI erro (pixel ${p.id}):`, resp.status, data);
+        } else {
+          console.log(`Meta CAPI OK (pixel ${p.id}):`, data);
+        }
+        return { pixel_id: p.id, ok: resp.ok, status: resp.status, data };
+      }),
+    );
 
-    const result = await resp.json();
-    if (!resp.ok) {
-      console.error('Meta CAPI erro:', resp.status, result);
+    const anyOk = results.some((r) => r.ok);
+    if (!anyOk) {
       return new Response(
-        JSON.stringify({ error: 'Meta API erro', status: resp.status, details: result }),
+        JSON.stringify({ error: 'Meta API erro em todos os pixels', results }),
         { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
