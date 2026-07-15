@@ -1,7 +1,9 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 
-const PIXEL_ID = '781663838269090';
-const ACCESS_TOKEN = Deno.env.get('META_PIXEL_ACCESS_TOKEN');
+const PIXELS: Array<{ id: string; token: string | undefined }> = [
+  { id: '781663838269090', token: Deno.env.get('META_PIXEL_ACCESS_TOKEN') },
+  { id: '1794243745264762', token: Deno.env.get('META_PIXEL_2_ACCESS_TOKEN') },
+];
 const API_VERSION = 'v19.0';
 
 // SHA-256 hash (Meta exige PII com hash)
