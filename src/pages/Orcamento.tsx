@@ -114,8 +114,32 @@ const BenefitHighlights = ({ className = "" }: { className?: string }) => (
   </div>
 );
 
+const ESTAGIO_OPTIONS = [
+  "Tenho projeto e/ou medidas",
+  "Projeto em andamento",
+  "Cotando fornecedores",
+  "Pesquisando / ideia inicial",
+];
+
+const AREA_OPTIONS = [
+  "Até 100 m²",
+  "101 a 150 m²",
+  "151 a 250 m²",
+  "Acima de 250 m²",
+];
+
+const DECISAO_OPTIONS = [
+  "✅ Sim, já decidi",
+  "🤔 Estou quase decidido",
+  "🏗️ Estou comparando com a alvenaria",
+  "📚 Ainda quero conhecer melhor o sistema",
+];
+
 const Orcamento = () => {
   const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
+  const [estagio, setEstagio] = useState("");
+  const [area, setArea] = useState("");
+  const [decisao, setDecisao] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
