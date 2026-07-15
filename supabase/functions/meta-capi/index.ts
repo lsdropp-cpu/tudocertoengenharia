@@ -27,9 +27,10 @@ Deno.serve(async (req) => {
   }
 
   try {
-    if (!ACCESS_TOKEN) {
+    const activePixels = PIXELS.filter((p) => !!p.token);
+    if (activePixels.length === 0) {
       return new Response(
-        JSON.stringify({ error: 'META_PIXEL_ACCESS_TOKEN não configurado' }),
+        JSON.stringify({ error: 'Nenhum META_PIXEL_ACCESS_TOKEN configurado' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
