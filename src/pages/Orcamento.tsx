@@ -116,32 +116,11 @@ const SERVICO_OPTIONS = [
   "Ainda não tenho certeza",
 ];
 
-const TIPO_OBRA_OPTIONS = [
-  "Construção do zero",
-  "Reforma",
-  "Ampliação",
-  "Comercial",
-];
-
-const FASE_OPTIONS = [
-  "Projeto concluído",
-  "Projeto em desenvolvimento",
-  "Buscando orçamento",
-  "Apenas pesquisando",
-];
-
 const AREA_OPTIONS = [
   "Até 100 m²",
   "De 101 a 150 m²",
   "De 151 a 250 m²",
   "Acima de 250 m²",
-];
-
-const PRAZO_OPTIONS = [
-  "Imediatamente",
-  "Em até 3 meses",
-  "Entre 3 e 6 meses",
-  "Ainda sem previsão",
 ];
 
 const Orcamento = () => {
