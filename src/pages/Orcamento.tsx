@@ -181,10 +181,10 @@ const Orcamento = () => {
       return;
     }
 
-    if (!estagio || !area || !decisao) {
+    if (!servico || !tipoObra || !fase || !area || !prazo) {
       toast({
         title: "Complete a qualificação",
-        description: "Selecione o estágio, a área e a decisão sobre Steel Frame.",
+        description: "Selecione todas as opções nas caixas de seleção.",
         variant: "destructive",
       });
       return;
@@ -192,14 +192,14 @@ const Orcamento = () => {
 
     setLoading(true);
     const { nome, telefone, email, cidade, mensagem } = parsed.data;
-    const qualif = `Estágio: ${estagio}\nÁrea: ${area}\nDecisão Steel Frame: ${decisao}`;
+    const qualif = `Serviço: ${servico}\nTipo de obra: ${tipoObra}\nFase: ${fase}\nÁrea: ${area}\nPrazo: ${prazo}`;
     const mensagemFinal = mensagem ? `${qualif}\n\n${mensagem}` : qualif;
     const { error } = await supabase.from("leads").insert({
       nome,
       telefone,
       email,
       cidade,
-      estagio,
+      estagio: fase,
       mensagem: mensagemFinal,
     });
     setLoading(false);
