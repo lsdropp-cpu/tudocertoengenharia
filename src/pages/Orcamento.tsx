@@ -34,13 +34,7 @@ const leadSchema = z.object({
     .string()
     .trim()
     .regex(/^\d{10,11}$/, "Telefone deve ter DDD + número (10 ou 11 dígitos). Ex: 51989192443"),
-  email: z
-    .string()
-    .trim()
-    .max(200)
-    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, "Informe um e-mail válido. Ex: nome@dominio.com"),
   cidade: z.string().trim().min(2, "Informe sua cidade").max(200),
-  mensagem: z.string().trim().max(2000).optional(),
 });
 
 const beneficios = [
