@@ -151,26 +151,26 @@ const Orcamento = () => {
       return;
     }
 
-    if (!servico || !tipoObra || !fase || !area || !prazo) {
+    if (!servico || !area) {
       toast({
         title: "Complete a qualificação",
-        description: "Selecione todas as opções nas caixas de seleção.",
+        description: "Selecione o serviço e a área da obra.",
         variant: "destructive",
       });
       return;
     }
 
     setLoading(true);
-    const { nome, telefone, email, cidade, mensagem } = parsed.data;
-    const qualif = `Serviço: ${servico}\nTipo de obra: ${tipoObra}\nFase: ${fase}\nÁrea: ${area}\nPrazo: ${prazo}`;
-    const mensagemFinal = mensagem ? `${qualif}\n\n${mensagem}` : qualif;
+    const { nome, telefone, cidade } = parsed.data;
+    const email = "nao-informado@orcamento.local";
+    const qualif = `Serviço: ${servico}\nÁrea: ${area}`;
     const { error } = await supabase.from("leads").insert({
       nome,
       telefone,
       email,
       cidade,
-      estagio: fase,
-      mensagem: mensagemFinal,
+      estagio: "Novo",
+      mensagem: qualif,
     });
     setLoading(false);
 
@@ -232,12 +232,9 @@ const Orcamento = () => {
 
 
     setSent(true);
-    setForm({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
+    setForm({ nome: "", telefone: "", cidade: "" });
     setServico("");
-    setTipoObra("");
-    setFase("");
     setArea("");
-    setPrazo("");
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
   };
 
