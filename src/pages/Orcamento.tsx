@@ -114,32 +114,49 @@ const BenefitHighlights = ({ className = "" }: { className?: string }) => (
   </div>
 );
 
-const ESTAGIO_OPTIONS = [
-  "Tenho projeto e/ou medidas",
-  "Projeto em andamento",
-  "Cotando fornecedores",
-  "Pesquisando / ideia inicial",
+const SERVICO_OPTIONS = [
+  "Estrutura em Steel Frame",
+  "Drywall",
+  "Projeto e execução",
+  "Reforma em Steel Frame",
+  "Ainda não tenho certeza",
+];
+
+const TIPO_OBRA_OPTIONS = [
+  "Construção do zero",
+  "Reforma",
+  "Ampliação",
+  "Comercial",
+];
+
+const FASE_OPTIONS = [
+  "Projeto concluído",
+  "Projeto em desenvolvimento",
+  "Buscando orçamento",
+  "Apenas pesquisando",
 ];
 
 const AREA_OPTIONS = [
   "Até 100 m²",
-  "101 a 150 m²",
-  "151 a 250 m²",
+  "De 101 a 150 m²",
+  "De 151 a 250 m²",
   "Acima de 250 m²",
 ];
 
-const DECISAO_OPTIONS = [
-  "✅ Sim, já decidi",
-  "🤔 Estou quase decidido",
-  "🏗️ Estou comparando com a alvenaria",
-  "📚 Ainda quero conhecer melhor o sistema",
+const PRAZO_OPTIONS = [
+  "Imediatamente",
+  "Em até 3 meses",
+  "Entre 3 e 6 meses",
+  "Ainda sem previsão",
 ];
 
 const Orcamento = () => {
   const [form, setForm] = useState({ nome: "", telefone: "", email: "", cidade: "", mensagem: "" });
-  const [estagio, setEstagio] = useState("");
+  const [servico, setServico] = useState("");
+  const [tipoObra, setTipoObra] = useState("");
+  const [fase, setFase] = useState("");
   const [area, setArea] = useState("");
-  const [decisao, setDecisao] = useState("");
+  const [prazo, setPrazo] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
