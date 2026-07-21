@@ -313,9 +313,8 @@ const Orcamento = () => {
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
                   {[
-                    { name: "nome", label: "Nome completo", type: "text", placeholder: "Seu nome" },
-                    { name: "telefone", label: "Telefone / WhatsApp", type: "tel", placeholder: "DDD + número (ex: 11987654321)", inputMode: "numeric", pattern: "[0-9]{10,11}", maxLength: 11 },
-                    { name: "email", label: "E-mail", type: "email", placeholder: "nome@dominio.com" },
+                    { name: "nome", label: "Nome", type: "text", placeholder: "Seu nome" },
+                    { name: "telefone", label: "WhatsApp", type: "tel", placeholder: "DDD + número (ex: 11987654321)", inputMode: "numeric", pattern: "[0-9]{10,11}", maxLength: 11 },
                     { name: "cidade", label: "Cidade", type: "text", placeholder: "Sua cidade" },
                   ].map((f: any) => (
                     <div key={f.name}>
@@ -335,11 +334,8 @@ const Orcamento = () => {
                     </div>
                   ))}
                   {[
-                    { label: "Qual serviço você procura?", value: servico, set: setServico, options: SERVICO_OPTIONS, placeholder: "Selecione o serviço" },
-                    { label: "Qual é o tipo da obra?", value: tipoObra, set: setTipoObra, options: TIPO_OBRA_OPTIONS, placeholder: "Selecione o tipo" },
-                    { label: "Em que fase está o projeto?", value: fase, set: setFase, options: FASE_OPTIONS, placeholder: "Selecione a fase" },
-                    { label: "Qual é a área aproximada da obra?", value: area, set: setArea, options: AREA_OPTIONS, placeholder: "Selecione a área" },
-                    { label: "Quando pretende iniciar a obra?", value: prazo, set: setPrazo, options: PRAZO_OPTIONS, placeholder: "Selecione o prazo" },
+                    { label: "Qual serviço procura?", value: servico, set: setServico, options: SERVICO_OPTIONS, placeholder: "Selecione o serviço" },
+                    { label: "Área da obra", value: area, set: setArea, options: AREA_OPTIONS, placeholder: "Selecione a área" },
                   ].map((q) => (
                     <div key={q.label}>
                       <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{q.label}</label>
@@ -364,20 +360,6 @@ const Orcamento = () => {
                       </select>
                     </div>
                   ))}
-                  <div>
-                    <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">
-                      Conte-nos um pouco sobre o seu projeto
-                    </label>
-                    <textarea
-                      name="mensagem"
-                      value={form.mensagem}
-                      onChange={handleChange}
-                      placeholder="Ex: Reforma em Steel Frame e Drywall de 120m²"
-                      rows={4}
-                      maxLength={2000}
-                      className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors resize-y"
-                    />
-                  </div>
                   <Button type="submit" variant="hero" size="xl" className="w-full px-3 text-sm sm:text-lg tracking-wide whitespace-normal leading-tight" disabled={loading}>
                     {loading ? "Enviando..." : (<>Quero meu orçamento <Send className="ml-2 w-5 h-5" /></>)}
                   </Button>
