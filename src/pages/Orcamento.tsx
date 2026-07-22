@@ -124,7 +124,7 @@ const AREA_OPTIONS = [
 ];
 
 const Orcamento = () => {
-  const [form, setForm] = useState({ nome: "", telefone: "", cidade: "" });
+  const [form, setForm] = useState({ nome: "", telefone: "", cidade: "", mensagem: "" });
   const [servico, setServico] = useState("");
   const [area, setArea] = useState("");
   const [loading, setLoading] = useState(false);
