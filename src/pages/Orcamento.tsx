@@ -233,7 +233,7 @@ const Orcamento = () => {
 
 
     setSent(true);
-    setForm({ nome: "", telefone: "", cidade: "" });
+    setForm({ nome: "", telefone: "", cidade: "", mensagem: "" });
     setServico("");
     setArea("");
     toast({ title: "Recebemos seu contato!", description: "Em breve nossa equipe vai falar com você." });
