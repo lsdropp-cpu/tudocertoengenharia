@@ -361,6 +361,17 @@ const Orcamento = () => {
                       </select>
                     </div>
                   ))}
+                  <div>
+                    <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">Conte um pouco sobre seu projeto <span className="text-secondary-foreground/40">(opcional)</span></label>
+                    <textarea
+                      name="mensagem"
+                      rows={4}
+                      value={form.mensagem}
+                      onChange={handleChange}
+                      placeholder="Ex: é uma reforma em steel frame e drywall de 120m²..."
+                      className="w-full min-w-0 px-4 py-3 rounded-lg bg-dark-bg border border-secondary-foreground/10 text-base text-secondary-foreground placeholder:text-secondary-foreground/30 focus:border-primary focus:outline-none transition-colors resize-none"
+                    />
+                  </div>
                   <Button type="submit" variant="hero" size="xl" className="w-full px-3 text-sm sm:text-lg tracking-wide whitespace-normal leading-tight" disabled={loading}>
                     {loading ? "Enviando..." : (<>Quero meu orçamento <Send className="ml-2 w-5 h-5" /></>)}
                   </Button>
