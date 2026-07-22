@@ -163,7 +163,8 @@ const Orcamento = () => {
     setLoading(true);
     const { nome, telefone, cidade } = parsed.data;
     const email = "nao-informado@orcamento.local";
-    const qualif = `Serviço: ${servico}\nÁrea: ${area}`;
+    const descricao = form.mensagem.trim();
+    const qualif = `Serviço: ${servico}\nÁrea: ${area}${descricao ? `\n\nDescrição:\n${descricao}` : ""}`;
     const { error } = await supabase.from("leads").insert({
       nome,
       telefone,
