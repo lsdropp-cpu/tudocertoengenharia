@@ -41,7 +41,30 @@ const beneficios = [
   { icon: Clock, title: "Obra até 3x mais rápida", desc: "Entrega em meses, não anos." },
   { icon: Leaf, title: "Sustentável e limpo", desc: "Menos resíduos, mais eficiência." },
   { icon: ShieldCheck, title: "Estrutura certificada", desc: "Aço galvanizado de alta durabilidade." },
-  { icon: Hammer, title: "Projeto sob medida", desc: "Do residencial ao comercial." },
+  { icon: Hammer, title: "Reforma sem demolição", desc: "Amplie ou reforme com menos sujeira e prazo." },
+];
+
+const reformasBeneficios = [
+  {
+    icon: Clock,
+    title: "Reforma mais rápida",
+    desc: "Ampliações e reformas em Steel Frame são executadas em semanas, não meses.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Estrutura leve e resistente",
+    desc: "Ideal para segundo pavimento, ampliações e reformas sem sobrecarregar a fundação existente.",
+  },
+  {
+    icon: Hammer,
+    title: "Menos quebra e entulho",
+    desc: "Perfil de aço galvanizado: encaixe preciso, obra limpa e menos interferência no dia a dia.",
+  },
+  {
+    icon: Ruler,
+    title: "Compartimentos sob medida",
+    desc: "Crie novos cômodos, banheiros, escritórios ou áreas gourmet com acabamento moderno.",
+  },
 ];
 
 const tipos = [
@@ -259,16 +282,16 @@ const Orcamento = () => {
         <div className="grid min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] gap-6 lg:gap-12 items-start">
           <div className="min-w-0 animate-fade-in">
             <span className="inline-block text-primary font-semibold uppercase tracking-wider text-[11px] sm:text-sm mb-3">
-              Construa em Steel Frame
+              Construção e Reforma em Steel Frame
             </span>
             <h1 className="font-display text-[2.15rem] sm:text-4xl md:text-5xl lg:text-6xl leading-[0.95] mb-4 sm:mb-6 break-words">
-              SEU PROJETO PRONTO
+              CONSTRUA OU REFORME
               <br />
               <span className="text-primary">EM ATÉ 3X MENOS TEMPO</span>
             </h1>
             <p className="text-secondary-foreground/70 text-sm sm:text-lg leading-relaxed mb-5 sm:mb-8 max-w-lg">
               Solicite um orçamento sem compromisso e descubra como o Steel Frame
-              pode transformar sua obra com mais qualidade, menos prazo e custo previsível.
+              acelera casas, comércios e <strong className="text-secondary-foreground">reformas</strong> com mais qualidade, menos prazo e custo previsível.
             </p>
 
             <BenefitHighlights className="hidden lg:block" />
@@ -387,6 +410,63 @@ const Orcamento = () => {
       </section>
 
       <Comparativo />
+
+      {/* Reformas e Ampliações */}
+      <section className="py-12 lg:py-24 bg-dark-bg border-y border-secondary-foreground/5">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div>
+              <span className="text-primary font-semibold uppercase tracking-wider text-sm">
+                Especialidade
+              </span>
+              <h2 className="font-display text-2xl sm:text-3xl md:text-5xl mt-3 mb-5">
+                Reformas e Ampliações <span className="text-primary">em Steel Frame</span>
+              </h2>
+              <p className="text-secondary-foreground/70 text-base sm:text-lg leading-relaxed mb-6">
+                Aumente sua casa, crie novos ambientes ou reforme sem demolição total.
+                O Steel Frame permite executar ampliações e reformas com <strong className="text-secondary-foreground">obra limpa, rápida e estrutura leve</strong>,
+                ideal para quem já mora no imóvel e não quer meses de transtorno.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  "Segundo pavimento sem sobrecarregar a fundação",
+                  "Novos cômodos, banheiros e áreas gourmet",
+                  "Reforma de fachada e acabamento externo",
+                  "Drywall, forros e divisórias para ambientes internos",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-secondary-foreground/80">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                variant="hero"
+                size="lg"
+                onClick={scrollToForm}
+                className="mt-8"
+              >
+                Quero orçar minha reforma <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              {reformasBeneficios.map((r, i) => (
+                <div
+                  key={i}
+                  className="p-5 sm:p-6 rounded-2xl bg-dark-card/60 border border-secondary-foreground/10 hover:border-primary/30 transition-all"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-green-gradient flex items-center justify-center mb-4">
+                    <r.icon className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                  <h3 className="font-display text-lg mb-2">{r.title}</h3>
+                  <p className="text-secondary-foreground/60 text-sm leading-relaxed">{r.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Tipos de projeto */}
       <section className="py-12 lg:py-24 bg-dark-bg">
