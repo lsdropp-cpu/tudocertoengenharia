@@ -282,16 +282,16 @@ const Orcamento = () => {
         <div className="grid min-w-0 lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] gap-6 lg:gap-12 items-start">
           <div className="min-w-0 animate-fade-in">
             <span className="inline-block text-primary font-semibold uppercase tracking-wider text-[11px] sm:text-sm mb-3">
-              Construa em Steel Frame
+              Construção e Reforma em Steel Frame
             </span>
             <h1 className="font-display text-[2.15rem] sm:text-4xl md:text-5xl lg:text-6xl leading-[0.95] mb-4 sm:mb-6 break-words">
-              SEU PROJETO PRONTO
+              CONSTRUA OU REFORME
               <br />
               <span className="text-primary">EM ATÉ 3X MENOS TEMPO</span>
             </h1>
             <p className="text-secondary-foreground/70 text-sm sm:text-lg leading-relaxed mb-5 sm:mb-8 max-w-lg">
               Solicite um orçamento sem compromisso e descubra como o Steel Frame
-              pode transformar sua obra com mais qualidade, menos prazo e custo previsível.
+              acelera casas, comércios e <strong className="text-secondary-foreground">reformas</strong> com mais qualidade, menos prazo e custo previsível.
             </p>
 
             <BenefitHighlights className="hidden lg:block" />
