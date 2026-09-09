@@ -41,7 +41,30 @@ const beneficios = [
   { icon: Clock, title: "Obra até 3x mais rápida", desc: "Entrega em meses, não anos." },
   { icon: Leaf, title: "Sustentável e limpo", desc: "Menos resíduos, mais eficiência." },
   { icon: ShieldCheck, title: "Estrutura certificada", desc: "Aço galvanizado de alta durabilidade." },
-  { icon: Hammer, title: "Projeto sob medida", desc: "Do residencial ao comercial." },
+  { icon: Hammer, title: "Reforma sem demolição", desc: "Amplie ou reforme com menos sujeira e prazo." },
+];
+
+const reformasBeneficios = [
+  {
+    icon: Clock,
+    title: "Reforma mais rápida",
+    desc: "Ampliações e reformas em Steel Frame são executadas em semanas, não meses.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Estrutura leve e resistente",
+    desc: "Ideal para segundo pavimento, ampliações e reformas sem sobrecarregar a fundação existente.",
+  },
+  {
+    icon: Hammer,
+    title: "Menos quebra e entulho",
+    desc: "Perfil de aço galvanizado: encaixe preciso, obra limpa e menos interferência no dia a dia.",
+  },
+  {
+    icon: Ruler,
+    title: "Compartimentos sob medida",
+    desc: "Crie novos cômodos, banheiros, escritórios ou áreas gourmet com acabamento moderno.",
+  },
 ];
 
 const tipos = [
