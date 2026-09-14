@@ -339,7 +339,7 @@ const Orcamento = () => {
                   ))}
                   {[
                     { label: "Qual serviço procura?", value: servico, set: setServico, options: SERVICO_OPTIONS, placeholder: "Selecione o serviço" },
-                    { label: "Área da obra", value: area, set: setArea, options: AREA_OPTIONS, placeholder: "Selecione a área" },
+                    { label: "Qual será aproximadamente o tamanho da obra?", value: area, set: setArea, options: AREA_OPTIONS, placeholder: "Selecione a área" },
                   ].map((q) => (
                     <div key={q.label}>
                       <label className="block text-sm text-secondary-foreground/70 mb-1.5 sm:mb-2">{q.label}</label>
